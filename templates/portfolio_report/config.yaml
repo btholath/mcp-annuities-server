@@ -1,0 +1,16 @@
+description: "Executive portfolio report grouped by a chosen dimension"
+version: "1.0"
+arguments:
+  - name: "group_by"
+    description: "Column the summary is grouped by"
+    required: true
+  - name: "summary_data"
+    description: "Aggregated summary stats (auto-injected by server.py)"
+    required: true
+metadata:
+  tags:
+    - annuity
+    - portfolio
+    - executive-report
+  suggested_use: "Use to generate a leadership-facing portfolio summary"
+  output_format: "markdown"

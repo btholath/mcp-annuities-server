@@ -1,0 +1,15 @@
+description: "Plain-English client letter summarizing the annuity contract"
+version: "1.0"
+arguments:
+  - name: "client_id"
+    description: "Client identifier, e.g. CLIENT_0001"
+    required: true
+  - name: "client_data"
+    description: "Full client record (auto-injected by server.py)"
+    required: true
+metadata:
+  tags:
+    - annuity
+    - client-letter
+  suggested_use: "Use to draft a friendly annual statement letter for the client"
+  output_format: "markdown"

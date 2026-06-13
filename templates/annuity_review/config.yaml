@@ -1,0 +1,16 @@
+description: "Structured suitability review for a single annuity client"
+version: "1.0"
+arguments:
+  - name: "client_id"
+    description: "Client identifier, e.g. CLIENT_0001"
+    required: true
+  - name: "client_data"
+    description: "Full client record (auto-injected by server.py)"
+    required: true
+metadata:
+  tags:
+    - annuity
+    - suitability
+    - compliance
+  suggested_use: "Use when reviewing whether a client's current annuity remains suitable"
+  output_format: "markdown"
