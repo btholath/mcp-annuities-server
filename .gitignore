@@ -1,0 +1,14 @@
+.env
+.env.local
+.env*.local
+*.pem
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+*.log

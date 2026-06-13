@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "annuities-server": {
+      "command": "/usr/bin/python3.12",
+      "args": ["server.py"],
+      "cwd": "/home/bijut/mcp-annuities-server"
+    }
+  }
+}

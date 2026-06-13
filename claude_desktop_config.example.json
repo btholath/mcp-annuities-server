@@ -1,0 +1,11 @@
+{
+  "// NOTE": "Example config for Claude Desktop (~/.config/Claude/claude_desktop_config.json on Linux, or %APPDATA%\\Claude\\claude_desktop_config.json on Windows).",
+  "// The original tutorial repo hardcoded": "C:\\Users\\Arnold\\Desktop\\MCP Server COurse -- replace with YOUR absolute path.",
+
+  "mcpServers": {
+    "annuities-server": {
+      "command": "/home/YOUR_USERNAME/mcp-annuities-server/.venv/bin/python",
+      "args": ["/home/YOUR_USERNAME/mcp-annuities-server/server.py"]
+    }
+  }
+}
