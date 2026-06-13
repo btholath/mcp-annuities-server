@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Annuities Server — Full Documentation</title>
+<style>
+  :root {
+    --bg:       #0f1117;
+    --surface:  #181c27;
+    --surface2: #1e2336;
+    --border:   #2a3050;
+    --text:     #e2e8f0;
+    --muted:    #8892a4;
+    --blue:     #4f8ef7;
+    --blue-dim: #1a2d5a;
+    --purple:   #a78bfa;
+    --purple-dim:#2d1f5e;
+    --teal:     #2dd4bf;
+    --teal-dim: #0d3d38;
+    --amber:    #fbbf24;
+    --amber-dim:#3d2d00;
+    --gray:     #94a3b8;
+    --gray-dim: #1e2533;
+    --green:    #4ade80;
+    --mono:     'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    --sans:     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 0 0 80px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1f35 50%, #0f1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 40px 40px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--blue-dim);
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: var(--mono);
+    letter-spacing: .05em;
+    padding: 4px 14px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #a78bfa, #4f8ef7, #2dd4bf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto 24px;
+  }
+  .badge-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--muted);
+    padding: 4px 12px;
+  }
+
+  /* ── Layout ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 48px 0 0; }
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 24px;
+  }
+  h3 { font-size: 16px; font-weight: 600; color: var(--blue); margin: 28px 0 10px; }
+  p { color: var(--muted); margin-bottom: 14px; }
+  strong { color: var(--text); font-weight: 600; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  th {
+    background: var(--surface2);
+    color: var(--text);
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+  td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--surface); }
+  td code, th code { background: var(--surface2); padding: 1px 6px; border-radius: 4px; font-family: var(--mono); font-size: 12px; color: var(--teal); }
+
+  /* ── Code blocks ── */
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c9d1d9;
+    margin: 12px 0 20px;
+  }
+  code { font-family: var(--mono); font-size: 13px; color: var(--teal); background: var(--surface2); padding: 2px 6px; border-radius: 4px; }
+
+  /* ── Step cards ── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+  .step-num.blue   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid var(--blue); }
+  .step-num.purple { background: var(--purple-dim);  color: var(--purple); border: 1px solid var(--purple); }
+  .step-num.teal   { background: var(--teal-dim);    color: var(--teal);   border: 1px solid var(--teal); }
+  .step-num.amber  { background: var(--amber-dim);   color: var(--amber);  border: 1px solid var(--amber); }
+  .step-num.gray   { background: var(--gray-dim);    color: var(--gray);   border: 1px solid var(--gray); }
+  .step-body { flex: 1; }
+  .step-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .step-sub { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .step-body p { margin-bottom: 10px; }
+  .step-body pre { margin-top: 10px; }
+
+  /* ── Callout boxes ── */
+  .callout {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+    border-left: 3px solid;
+  }
+  .callout.info  { background: var(--blue-dim);   border-color: var(--blue);   color: #93c5fd; }
+  .callout.warn  { background: var(--amber-dim);  border-color: var(--amber);  color: #fcd34d; }
+  .callout.tip   { background: var(--teal-dim);   border-color: var(--teal);   color: #5eead4; }
+  .callout.exam  { background: var(--purple-dim); border-color: var(--purple); color: #c4b5fd; }
+  .callout strong { color: inherit; }
+
+  /* ── File tree ── */
+  .tree {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.8;
+    color: #c9d1d9;
+    margin: 12px 0 20px;
+  }
+  .tree .dim { color: var(--muted); }
+  .tree .hi  { color: var(--teal); }
+  .tree .hib { color: var(--blue); }
+  .tree .hia { color: var(--amber); }
+
+  /* ── Diagrams ── */
+  .diagram-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 20px 20px;
+    margin: 20px 0 32px;
+    overflow: hidden;
+  }
+  .diagram-title {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 16px;
+    padding-left: 4px;
+  }
+  svg text.th { font-family: var(--sans); font-size: 14px; font-weight: 600; fill: var(--text); }
+  svg text.ts { font-family: var(--sans); font-size: 12px; font-weight: 400; fill: var(--muted); }
+
+  /* ── Node colors for dark bg SVGs ── */
+  .node-gray   { fill: #1e2533; stroke: #94a3b8; }
+  .node-blue   { fill: #1a2d5a; stroke: #4f8ef7; }
+  .node-purple { fill: #2d1f5e; stroke: #a78bfa; }
+  .node-teal   { fill: #0d3d38; stroke: #2dd4bf; }
+  .node-amber  { fill: #3d2d00; stroke: #fbbf24; }
+  .text-gray   { fill: #94a3b8; }
+  .text-blue   { fill: #93c5fd; }
+  .text-purple { fill: #c4b5fd; }
+  .text-teal   { fill: #5eead4; }
+  .text-amber  { fill: #fcd34d; }
+  .text-main   { fill: #e2e8f0; }
+  .text-muted  { fill: #8892a4; }
+  .arr-line    { stroke: #4f8ef7; stroke-width: 1.5; fill: none; }
+  .arr-ret     { stroke: #2dd4bf; stroke-width: 1.5; fill: none; stroke-dasharray: 5 3; }
+
+  /* ── Quick ref ── */
+  .qr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 2;
+    color: #c9d1d9;
+  }
+  .qr-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+
+  /* ── Domain tags ── */
+  .domain-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .d1 { background: #1a2d5a; color: var(--blue); }
+  .d2 { background: #2d1f5e; color: var(--purple); }
+  .d3 { background: #0d3d38; color: var(--teal); }
+  .d4 { background: #3d2d00; color: var(--amber); }
+  .d5 { background: #1e2533; color: var(--gray); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 36px 20px 28px; }
+    .hero h1 { font-size: 26px; }
+    .container { padding: 0 16px; }
+    .step { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<div class="hero">
+  <div class="hero-badge">CCAF Domain 2 · MCP Integration</div>
+  <h1>MCP Annuities Server</h1>
+  <p>Consolidated from <code style="font-size:13px;background:#1e2336;padding:2px 8px;border-radius:4px;color:#2dd4bf">MCP-Example-main</code> + <code style="font-size:13px;background:#1e2336;padding:2px 8px;border-radius:4px;color:#2dd4bf">mcp-prompt-templates-main</code> — fixed, merged, and mapped to the Retirement Services Annuities dataset.</p>
+  <div class="badge-row">
+    <span class="badge">VS Code + Claude Code</span>
+    <span class="badge">WSL / Ubuntu</span>
+    <span class="badge">Python 3.12</span>
+    <span class="badge">FastMCP</span>
+    <span class="badge">stdio transport</span>
+    <span class="badge">500-row dataset</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══════════════════ WHAT WAS FIXED ══════════════════ -->
+<section>
+  <h2>What was wrong — and what was fixed</h2>
+  <table>
+    <thead><tr><th>Issue in original tutorial repos</th><th>Fix in this project</th></tr></thead>
+    <tbody>
+      <tr><td>Hardcoded <code>C:\Users\Arnold\Desktop\typesdk.md</code></td><td>Replaced with <code>data/annuities.csv</code>, loaded via <code>Path(__file__).parent</code> — works on any OS</td></tr>
+      <tr><td><code>claude_desktop_config.json</code> used Windows paths + <code>uv</code></td><td>WSL-friendly example using <code>.venv/bin/python</code> with absolute Linux paths</td></tr>
+      <tr><td>Two separate repos — calculator tools vs YAML prompt templates</td><td>Merged into one server: 5 tools + 1 resource + 3 YAML-driven prompts on the annuities dataset</td></tr>
+      <tr><td>Low-level <code>Server</code> class (verbose, boilerplate-heavy)</td><td>Rewritten with FastMCP decorators: <code>@mcp.tool</code>, <code>@mcp.resource</code>, <code>@mcp.prompt</code></td></tr>
+      <tr><td><code>main.py</code> was a placeholder "Hello World"</td><td>Removed — not needed</td></tr>
+      <tr><td>No automated test — required IDE to verify</td><td>Added <code>test_client.py</code>: runs the whole server end-to-end standalone</td></tr>
+      <tr><td><code>realpath</code> follows symlinks to system Python, losing venv packages</td><td>Use <code>$(pwd)/.venv/bin/python</code> in <code>claude mcp add</code> — preserves venv path</td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn"><strong>Key lesson from the course transcript, applied:</strong> tool count is kept to 5. Too many tools means the LLM can no longer reliably pick the right one — tool boundary design is a real CCAF Domain 2 exam topic.</div>
+</section>
+
+<!-- ══════════════════ PROJECT STRUCTURE ══════════════════ -->
+<section>
+  <h2>Project structure</h2>
+  <div class="tree">
+<span class="hi">mcp-annuities-server/</span><br>
+├── <span class="hib">CLAUDE.md</span>            <span class="dim">← Claude Code reads this for project context</span><br>
+├── <span class="hib">README.html</span>          <span class="dim">← this file</span><br>
+├── <span class="hib">README.md</span>            <span class="dim">← plain-text version</span><br>
+├── <span class="hib">requirements.txt</span>     <span class="dim">← mcp[cli]>=1.9.4, pyyaml>=6.0</span><br>
+├── <span class="hi">server.py</span>             <span class="dim">← MCP server (5 tools + 1 resource + 3 prompts)</span><br>
+├── <span class="hi">test_client.py</span>        <span class="dim">← standalone end-to-end test, no IDE needed</span><br>
+├── <span class="hia">claude_desktop_config.example.json</span><br>
+├── <span class="dim">.vscode/</span><br>
+│   └── <span class="hia">mcp.json</span>          <span class="dim">← VS Code MCP config (for IDE integration)</span><br>
+├── <span class="dim">data/</span><br>
+│   ├── <span class="hi">annuities.csv</span>     <span class="dim">← 500-row synthetic dataset</span><br>
+│   └── <span class="hi">generate_data.py</span>  <span class="dim">← re-run to regenerate</span><br>
+└── <span class="dim">templates/</span>            <span class="dim">← YAML-driven prompt templates</span><br>
+    ├── <span class="dim">annuity_review/</span>   (config.yaml + template.md)<br>
+    ├── <span class="dim">client_summary/</span>   (config.yaml + template.md)<br>
+    └── <span class="dim">portfolio_report/</span> (config.yaml + template.md)
+  </div>
+</section>
+
+<!-- ══════════════════ SETUP ══════════════════ -->
+<section>
+  <h2>Setup (WSL / Ubuntu)</h2>
+  <pre>cd ~/mcp-annuities-server
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python data/generate_data.py    # generate the 500-row dataset</pre>
+</section>
+
+<!-- ══════════════════ LIFECYCLE DIAGRAM ══════════════════ -->
+<section>
+  <h2>Full request lifecycle — architecture diagram</h2>
+  <p>Every natural-language request travels through six layers before returning an answer. Click any layer heading below for a detailed explanation.</p>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Full lifecycle — stdio MCP tool call in Claude Code</div>
+    <svg width="100%" viewBox="0 0 680 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#4f8ef7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#2dd4bf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+      </defs>
+
+      <!-- Step 1 -->
+      <rect x="210" y="20" width="260" height="56" rx="8" class="node-gray" stroke-width="0.5"/>
+      <text x="340" y="41" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">1. User terminal</text>
+      <text x="340" y="60" text-anchor="middle" class="text-muted" font-family="sans-serif" font-size="12">Types natural-language request · WSL</text>
+
+      <line x1="340" y1="76" x2="340" y2="106" class="arr-line" marker-end="url(#arr1)"/>
+
+      <!-- Step 2 -->
+      <rect x="190" y="110" width="300" height="56" rx="8" class="node-blue" stroke-width="0.5"/>
+      <text x="340" y="131" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">2. Claude Code reasoning</text>
+      <text x="340" y="150" text-anchor="middle" class="text-blue" font-family="sans-serif" font-size="12">Tool schema matching · Sonnet / Opus</text>
+
+      <line x1="340" y1="166" x2="340" y2="196" class="arr-line" marker-end="url(#arr1)"/>
+
+      <!-- Step 3 -->
+      <rect x="170" y="200" width="340" height="56" rx="8" class="node-purple" stroke-width="0.5"/>
+      <text x="340" y="221" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">3. MCP stdio handshake</text>
+      <text x="340" y="240" text-anchor="middle" class="text-purple" font-family="sans-serif" font-size="12">JSON-RPC 2.0 over child process stdin/stdout</text>
+
+      <line x1="340" y1="256" x2="340" y2="286" class="arr-line" marker-end="url(#arr1)"/>
+
+      <!-- Step 4 -->
+      <rect x="160" y="290" width="360" height="56" rx="8" class="node-purple" stroke-width="0.5"/>
+      <text x="340" y="311" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">4. FastMCP dispatch + validation</text>
+      <text x="340" y="330" text-anchor="middle" class="text-purple" font-family="sans-serif" font-size="12">Schema validated · routes to Python function</text>
+
+      <line x1="340" y1="346" x2="340" y2="376" class="arr-line" marker-end="url(#arr1)"/>
+
+      <!-- Step 5 -->
+      <rect x="170" y="380" width="340" height="56" rx="8" class="node-teal" stroke-width="0.5"/>
+      <text x="340" y="401" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">5. Tool execution</text>
+      <text x="340" y="420" text-anchor="middle" class="text-teal" font-family="sans-serif" font-size="12">get_client / calculate_payout / search_clients</text>
+
+      <line x1="340" y1="436" x2="340" y2="466" class="arr-line" marker-end="url(#arr1)"/>
+
+      <!-- Step 6 -->
+      <rect x="210" y="470" width="260" height="56" rx="8" class="node-teal" stroke-width="0.5"/>
+      <text x="340" y="491" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">6. data/annuities.csv</text>
+      <text x="340" y="510" text-anchor="middle" class="text-teal" font-family="sans-serif" font-size="12">500 rows · 15 columns · all strings in CSV</text>
+
+      <!-- Return path -->
+      <path d="M 522 318 L 620 318 L 620 138 L 492 138" stroke="#2dd4bf" stroke-width="1.5" fill="none" stroke-dasharray="6 3" marker-end="url(#arr2)"/>
+      <text x="628" y="208" font-family="sans-serif" font-size="12" class="text-teal">JSON result</text>
+      <text x="628" y="226" font-family="sans-serif" font-size="12" class="text-teal">returns up</text>
+      <text x="628" y="244" font-family="sans-serif" font-size="12" class="text-teal">4→3→2→1</text>
+    </svg>
+  </div>
+
+<!-- ══════════════════ TOOL CHAIN DIAGRAM ══════════════════ -->
+  <div class="diagram-wrap">
+    <div class="diagram-title">Inside step 2 — implicit tool chaining (your session)</div>
+    <svg width="100%" viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#4f8ef7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+      </defs>
+
+      <rect x="190" y="20" width="300" height="56" rx="8" class="node-blue" stroke-width="0.5"/>
+      <text x="340" y="41" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">"Calculate the payout for this client"</text>
+      <text x="340" y="60" text-anchor="middle" class="text-blue" font-family="sans-serif" font-size="12">Model plans a two-step chain (no orchestrator needed)</text>
+
+      <line x1="340" y1="76" x2="340" y2="106" stroke="#4f8ef7" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+
+      <rect x="160" y="110" width="360" height="56" rx="8" class="node-teal" stroke-width="0.5"/>
+      <text x="340" y="131" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">Call 1 — get_client("CLIENT_0001")</text>
+      <text x="340" y="150" text-anchor="middle" class="text-teal" font-family="sans-serif" font-size="12">Returns full client record · all values as strings</text>
+
+      <line x1="340" y1="166" x2="340" y2="196" stroke="#4f8ef7" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+
+      <rect x="150" y="200" width="380" height="56" rx="8" class="node-amber" stroke-width="0.5"/>
+      <text x="340" y="221" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">Model extracts and type-converts fields</text>
+      <text x="340" y="240" text-anchor="middle" class="text-amber" font-family="sans-serif" font-size="12">current_account_value + crediting_rate_pct → float</text>
+
+      <line x1="340" y1="256" x2="340" y2="286" stroke="#4f8ef7" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+
+      <rect x="120" y="290" width="440" height="56" rx="8" class="node-teal" stroke-width="0.5"/>
+      <text x="340" y="311" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="14" font-weight="600">Call 2 — calculate_payout(principal, rate, term)</text>
+      <text x="340" y="330" text-anchor="middle" class="text-teal" font-family="sans-serif" font-size="12">Amortization formula · returns monthly_payment, total_paid</text>
+
+      <line x1="340" y1="346" x2="340" y2="376" stroke="#4f8ef7" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+
+      <rect x="170" y="378" width="340" height="22" rx="6" class="node-gray" stroke-width="0.5"/>
+      <text x="340" y="393" text-anchor="middle" class="text-main" font-family="sans-serif" font-size="12">Final answer: combines both results into one prose response</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════ STEP-BY-STEP EXPLANATIONS ══════════════════ -->
+<section>
+  <h2>Step-by-step — what each layer does</h2>
+  <div class="steps">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-num gray">1</div>
+      <div class="step-body">
+        <div class="step-title">User terminal <span class="domain-tag d3">Domain 3</span></div>
+        <div class="step-sub">VS Code integrated terminal running bash inside WSL/Ubuntu</div>
+        <p>You type a natural-language request to Claude Code — for example <code>"Use the annuities-server to look up CLIENT_0001"</code>. Several things are already in place before this text goes anywhere:</p>
+        <p><strong>Shell context.</strong> Your terminal is running inside <code>~/mcp-annuities-server</code>. Claude Code calls the absolute path to <code>.venv/bin/python</code> directly, which is why fixing the path from <code>/usr/bin/python3.12</code> (system Python, no mcp package) to <code>/home/bijut/mcp-annuities-server/.venv/bin/python</code> (venv, packages installed) was the critical fix.</p>
+        <p><strong>Auth context.</strong> The session is authenticated via Claude Pro subscription (<em>not</em> the API key) after running <code>claude /logout</code> and re-logging in without approving the API key. This avoids the "Both claude.ai and ANTHROPIC_API_KEY set" warning and keeps Claude Code usage off your API billing.</p>
+        <p><strong>What gets sent upstream.</strong> Your text, conversation history, CLAUDE.md memory files, and the full list of tool schemas from all connected MCP servers are bundled into the model call.</p>
+        <div class="callout tip"><strong>The terminal is just the I/O surface.</strong> All orchestration (deciding which tool to call, building the JSON-RPC request, managing the subprocess) happens inside the <code>claude</code> process, not in bash.</div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-num blue">2</div>
+      <div class="step-body">
+        <div class="step-title">Claude Code reasoning <span class="domain-tag d1">Domain 1</span> <span class="domain-tag d2">Domain 2</span></div>
+        <div class="step-sub">Tool schema matching · model: Sonnet 4.6 / Opus 4.8</div>
+        <p>This is the orchestration layer where a plain-English sentence becomes a structured decision about <em>which tool to call and with what arguments</em>.</p>
+        <p><strong>Step 2a — Assemble context.</strong> Claude Code builds the full message payload: your request, conversation history, CLAUDE.md instructions, and the tool schemas from <code>annuities-server</code> (5 tools with JSON Schema definitions — parameter names, types, descriptions).</p>
+        <p><strong>Step 2b — Tool selection.</strong> The model reads <code>"look up CLIENT_0001"</code> against the tool descriptions and matches it to <code>get_client(client_id: string)</code>. This is pattern matching against schema text — which is exactly why good descriptions matter.</p>
+        <p><strong>Step 2c — Produce tool_use block.</strong> Instead of a prose response, the model emits:</p>
+        <pre>{"type":"tool_use","name":"get_client","input":{"client_id":"CLIENT_0001"}}</pre>
+        <p><strong>Step 2d — Wait for result.</strong> Claude Code pauses the model's turn, sends the call down to layer 3, and feeds the result back as a <code>tool_result</code> block so the model can write its final formatted answer.</p>
+        <div class="callout exam"><strong>CCAF exam note (Domain 2):</strong> Tool <em>descriptions</em> are the only signal the model uses for selection. A vague description like "get data" causes wrong tool picks. A specific one like "Retrieve full annuity contract details for one client by ID" is reliable. This is the "tool boundary design" concept tested in Domain 2.</div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-num purple">3</div>
+      <div class="step-body">
+        <div class="step-title">MCP stdio handshake <span class="domain-tag d2">Domain 2</span></div>
+        <div class="step-sub">JSON-RPC 2.0 over child process stdin / stdout pipes</div>
+        <p>This is where Claude Code's abstract "call get_client" decision becomes an OS-level connection to your <code>server.py</code> process.</p>
+        <p><strong>Subprocess spawn (once, at session start).</strong> When Claude Code loaded <code>~/.claude.json</code> and saw the <code>annuities-server</code> entry, it immediately spawned <code>/home/bijut/mcp-annuities-server/.venv/bin/python server.py</code> as a child process with three wired pipes: stdin, stdout, stderr. The process stays alive for the whole session — this is why the manual sanity check (<code>python server.py</code> hangs silently) works.</p>
+        <p><strong>Initialization handshake.</strong> Before any tool can be called, the MCP client sends an <code>initialize</code> request over stdin. FastMCP responds with its capabilities (the tool/resource/prompt list). This is what <code>claude mcp list</code> checks when it reports <code>✔ Connected</code>.</p>
+        <p><strong>Message framing.</strong> Every message is a single line of newline-delimited JSON-RPC 2.0:</p>
+        <pre>{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"get_client","arguments":{"client_id":"CLIENT_0001"}}}</pre>
+        <p>stdout is reserved exclusively for protocol messages — <code>print()</code> in server.py would corrupt the stream. Logging goes to stderr (which is why INFO lines appeared in your test output without breaking anything).</p>
+        <p><strong>Lifetime.</strong> The subprocess stays alive for the whole Claude Code session. The earlier <code>✘ Failed to connect</code> happened because <code>realpath</code> resolved the venv symlink to <code>/usr/bin/python3.12</code>, which failed <code>import mcp</code> immediately — so the handshake in this step never completed.</p>
+        <div class="callout exam"><strong>CCAF exam contrast (Domain 2 — SSE transport):</strong> With SSE transport, instead of pipes to a local subprocess, the client opens an HTTP connection to a server anywhere on the network. The JSON-RPC message content stays identical; only the transport changes. SSE is multi-client; stdio is single-client.</div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-num purple">4</div>
+      <div class="step-body">
+        <div class="step-title">FastMCP dispatch + validation <span class="domain-tag d2">Domain 2</span></div>
+        <div class="step-sub">server.py receives the JSON-RPC message and routes to the right function</div>
+        <p><strong>1. Event loop reads the line.</strong> <code>mcp.run()</code> (last line of server.py) continuously reads newline-delimited JSON from stdin.</p>
+        <p><strong>2. Method dispatch.</strong> FastMCP checks <code>method: "tools/call"</code>, looks up <code>name: "get_client"</code> in its internal registry — built at startup by scanning every <code>@mcp.tool()</code> decorated function.</p>
+        <p><strong>3. Schema validation.</strong> FastMCP validates <code>arguments</code> against the JSON Schema auto-generated from the function's type hints before calling anything. Wrong type or missing required field → error response, no Python code runs.</p>
+        <p><strong>4. Function call.</strong> <code>get_client(client_id="CLIENT_0001")</code> — plain Python, synchronous.</p>
+        <p><strong>5. Result serialization.</strong> The returned dict is wrapped into an MCP <code>CallToolResult</code> with a text content block (even dict returns become JSON-encoded text — MCP content types are text/image/resource).</p>
+        <p><strong>6. Write to stdout</strong> → layer 3 reads it → layer 2 gets the result → model writes its final answer → layer 1 shows it to you.</p>
+        <div class="callout info"><strong>Why FastMCP over the low-level Server class:</strong> With <code>@mcp.tool()</code>, schema generation and validation are automatic from type hints. The original <code>mcp-prompt-templates-main</code> used the low-level class — you'd hand-write the JSON Schema in <code>list_tools()</code> and manually validate arguments in <code>call_tool()</code>. More boilerplate, more chance of schema/function drift.</div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step">
+      <div class="step-num teal">5</div>
+      <div class="step-body">
+        <div class="step-title">Tool execution <span class="domain-tag d2">Domain 2</span> <span class="domain-tag d4">Domain 4</span></div>
+        <div class="step-sub">get_client and calculate_payout — what each function actually does</div>
+
+        <h3>get_client(client_id: str) → dict</h3>
+        <pre>@mcp.tool()
+def get_client(client_id: str) -> dict:
+    for row in _load_all():
+        if row["client_id"] == client_id:
+            return row
+    return {"error": f"Client {client_id} not found"}</pre>
+        <p>Calls <code>_load_all()</code> which opens <code>data/annuities.csv</code> via <code>csv.DictReader</code> — every value comes back as a <strong>string</strong>, even numeric fields like <code>age</code> or <code>premium_amount</code>. Linear-scans for a matching <code>client_id</code>. Re-reads the entire CSV from disk on every call (fine at 500 rows; a production version would cache or index).</p>
+
+        <h3>calculate_payout(principal, annual_rate_pct, term_years) → dict</h3>
+        <pre>monthly_rate = (annual_rate_pct / 100) / 12
+monthly_payment = principal * monthly_rate / (1 - (1 + monthly_rate) ** (-n_payments))</pre>
+        <p>Standard amortization formula (same math as a mortgage payment). No data lookup — pure calculation. Important design choices: input validation first (<code>term_years &lt;= 0</code> returns a structured error), and the zero-rate edge case is handled separately to avoid dividing by zero.</p>
+        <div class="callout info"><strong>The chaining insight.</strong> When you said "calculate the payout for this client", Claude Code had no single tool that does both. It implicitly chained: <code>get_client</code> → extract <code>current_account_value</code> + <code>crediting_rate_pct</code> → <code>calculate_payout</code>. This multi-step reasoning from one natural-language sentence is the minimal live version of Domain 1's agentic loop — no orchestrator script needed.</div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step">
+      <div class="step-num teal">6</div>
+      <div class="step-body">
+        <div class="step-title">data/annuities.csv <span class="domain-tag d4">Domain 4</span></div>
+        <div class="step-sub">500 rows · 15 columns · generated by generate_data.py with seed 42</div>
+        <table>
+          <thead><tr><th>Column</th><th>Type (stored)</th><th>Example</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><code>client_id</code></td><td>string</td><td>CLIENT_0001</td><td>Zero-padded 4-digit primary key</td></tr>
+            <tr><td><code>date_of_birth</code></td><td>date string</td><td>1969-05-05</td><td>ISO format</td></tr>
+            <tr><td><code>age</code></td><td>string (int)</td><td>57</td><td>Derived at generation, not live</td></tr>
+            <tr><td><code>product_type</code></td><td>string</td><td>Fixed</td><td>Fixed / Variable / Indexed / Immediate / Deferred Income</td></tr>
+            <tr><td><code>premium_amount</code></td><td>string (float)</td><td>77882.26</td><td>Original investment</td></tr>
+            <tr><td><code>crediting_rate_pct</code></td><td>string (float)</td><td>5.47</td><td>Annual rate · range 2.5–6.5</td></tr>
+            <tr><td><code>term_years</code></td><td>string (int)</td><td>7</td><td>5 / 7 / 10 / 15 / 20</td></tr>
+            <tr><td><code>monthly_payment</code></td><td>string (float)</td><td>1118.06</td><td>Pre-computed at issue — not current</td></tr>
+            <tr><td><code>surrender_charge_pct</code></td><td>string (float)</td><td>2.23</td><td>Range 0–10</td></tr>
+            <tr><td><code>rider</code></td><td>string</td><td>None</td><td>Death Benefit / GLWB / GMIB / LTC / None</td></tr>
+            <tr><td><code>risk_profile</code></td><td>string</td><td>Conservative</td><td>Conservative / Moderate / Aggressive</td></tr>
+            <tr><td><code>state</code></td><td>string</td><td>CO</td><td>10 US state codes</td></tr>
+            <tr><td><code>payment_frequency</code></td><td>string</td><td>Quarterly</td><td>Monthly / Quarterly / Annual</td></tr>
+            <tr><td><code>contract_start_date</code></td><td>date string</td><td>2010-09-18</td><td>Range 2010–2023</td></tr>
+            <tr><td><code>current_account_value</code></td><td>string (float)</td><td>83588.87</td><td>Grown from premium via compounding</td></tr>
+          </tbody>
+        </table>
+        <div class="callout warn"><strong>Subtle quirk: two different "monthly payment" numbers exist.</strong> <code>monthly_payment</code> in the CSV is the original amortized payment computed at contract issue. <code>calculate_payout</code> computes a <em>new</em> payout from <code>current_account_value</code> today. These differ. Claude correctly flagged this in your session: "the payment frequency is listed as Quarterly while there's also a monthly payment field — let me know if you'd like me to calculate the payout."</div>
+        <div class="callout exam"><strong>Domain 4 connection:</strong> Every value is stored as a string — CSV has no types. This is why Pydantic structured output schemas are valuable: a model with <code>premium_amount: float</code> coerces <code>"77882.26"</code> automatically. Without a schema, every agent or tool doing math must manually call <code>float(row["premium_amount"])</code>.</div>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+</section>
+
+<!-- ══════════════════ SETUP STEPS ══════════════════ -->
+<section>
+  <h2>Step-by-step: wire into Claude Code</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num blue">1</div>
+      <div class="step-body">
+        <div class="step-title">Standalone test first — no IDE needed</div>
+        <pre>.venv/bin/python test_client.py</pre>
+        <p>Launches server.py as a subprocess, lists all tools/resources/prompts, calls one of each. If this works, the server is 100% functional. Everything else (Inspector, Claude Code, Claude Desktop) is just a different front-end.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num purple">2</div>
+      <div class="step-body">
+        <div class="step-title">MCP Inspector — visual debugging</div>
+        <pre>npx @modelcontextprotocol/inspector .venv/bin/python server.py</pre>
+        <p>Opens a browser UI to call tools manually, browse the resource, and trigger prompts. Use Stdio transport. Confirms everything works before wiring into Claude Code.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num teal">3</div>
+      <div class="step-body">
+        <div class="step-title">Register with Claude Code CLI</div>
+        <pre>claude mcp remove annuities-server   # remove if exists
+
+claude mcp add annuities-server -- "$(pwd)/.venv/bin/python" server.py
+
+claude mcp list
+# annuities-server: /home/bijut/mcp-annuities-server/.venv/bin/python server.py - ✔ Connected</pre>
+        <div class="callout warn"><strong>The critical fix: use <code>$(pwd)</code>, not <code>realpath</code>.</strong> <code>realpath</code> follows the venv's Python symlink to <code>/usr/bin/python3.12</code> (system Python, no mcp package installed) → <code>✘ Failed to connect</code>. <code>$(pwd)/.venv/bin/python</code> keeps the path pointing at the venv wrapper → <code>✔ Connected</code>.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num amber">4</div>
+      <div class="step-body">
+        <div class="step-title">Fix auth — use Claude Pro, not API key</div>
+        <pre>claude /logout
+# When asked "use claude.ai account?" → YES
+# When asked "approve API key?" → NO</pre>
+        <p>If you see "Opus 4.8 · API Usage Billing" instead of "Sonnet 4.6 · Claude Pro", Claude Code is billing your API key. The ANTHROPIC_API_KEY env var (set for your Python lab scripts) is being picked up. Either unset it before launching Claude Code, or keep it only in <code>.env</code> files loaded per-script.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num gray">5</div>
+      <div class="step-body">
+        <div class="step-title">Test in Claude Code</div>
+        <pre>claude</pre>
+        <p>Then in the Claude Code session:</p>
+        <pre>/mcp
+# → annuities-server listed with tools
+
+Use the annuities-server tools to look up CLIENT_0001
+Give me a portfolio summary grouped by risk_profile
+Calculate the payout for CLIENT_0001
+Use the annuity_review prompt for CLIENT_0050</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TOOL & PROMPT REFERENCE ══════════════════ -->
+<section>
+  <h2>Tool, resource and prompt reference</h2>
+  <h3>Tools (5 — intentionally minimal)</h3>
+  <table>
+    <thead><tr><th>Tool</th><th>Purpose</th><th>Example call</th></tr></thead>
+    <tbody>
+      <tr><td><code>get_client</code></td><td>Look up one client by ID</td><td><code>get_client(client_id="CLIENT_0001")</code></td></tr>
+      <tr><td><code>search_clients</code></td><td>Filter by product/risk/state/premium</td><td><code>search_clients(risk_profile="Aggressive", limit=5)</code></td></tr>
+      <tr><td><code>portfolio_summary</code></td><td>Aggregate stats by column</td><td><code>portfolio_summary(group_by="product_type")</code></td></tr>
+      <tr><td><code>calculate_payout</code></td><td>Amortized monthly payout</td><td><code>calculate_payout(principal=100000, annual_rate_pct=4.5, term_years=10)</code></td></tr>
+      <tr><td><code>calculate_percentage</code></td><td>Simple percentage utility</td><td><code>calculate_percentage(value=100000, percentage=5)</code></td></tr>
+    </tbody>
+  </table>
+  <h3>Resource</h3>
+  <table>
+    <thead><tr><th>URI</th><th>What it serves</th></tr></thead>
+    <tbody>
+      <tr><td><code>annuities://dataset</code></td><td>Full raw CSV content of <code>data/annuities.csv</code></td></tr>
+    </tbody>
+  </table>
+  <h3>Prompt templates (YAML-driven)</h3>
+  <table>
+    <thead><tr><th>Prompt</th><th>Purpose</th><th>Required args</th></tr></thead>
+    <tbody>
+      <tr><td><code>annuity_review</code></td><td>Structured suitability assessment</td><td><code>client_id</code></td></tr>
+      <tr><td><code>client_summary</code></td><td>Plain-English client letter</td><td><code>client_id</code></td></tr>
+      <tr><td><code>portfolio_report</code></td><td>Executive report for leadership</td><td><code>group_by</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════════════ CCAF MAP ══════════════════ -->
+<section>
+  <h2>CCAF exam domain mapping</h2>
+  <table>
+    <thead><tr><th>What you built / did</th><th>Exam concept</th><th>Domain</th></tr></thead>
+    <tbody>
+      <tr><td><code>@mcp.tool()</code> decorators with type hints</td><td>Tool schema design · auto-validation</td><td><span class="domain-tag d2">Domain 2</span></td></tr>
+      <tr><td>stdio transport (subprocess + pipes)</td><td>Local single-client MCP deployment</td><td><span class="domain-tag d2">Domain 2</span></td></tr>
+      <tr><td><code>claude mcp add</code> with correct venv path</td><td>MCP client configuration</td><td><span class="domain-tag d2">Domain 2</span></td></tr>
+      <tr><td>5-tool limit (not 10, not 20)</td><td>Tool boundary design · reasoning-overload prevention</td><td><span class="domain-tag d2">Domain 2</span></td></tr>
+      <tr><td><code>@mcp.resource("annuities://dataset")</code></td><td>MCP resources vs tools distinction</td><td><span class="domain-tag d2">Domain 2</span></td></tr>
+      <tr><td>YAML templates + <code>@mcp.prompt()</code></td><td>MCP prompt templates</td><td><span class="domain-tag d2">Domain 2</span></td></tr>
+      <tr><td>Claude chaining get_client → calculate_payout</td><td>Implicit task decomposition · agentic loop</td><td><span class="domain-tag d1">Domain 1</span></td></tr>
+      <tr><td>CLAUDE.md at project root</td><td>CLAUDE.md hierarchy · project-level context</td><td><span class="domain-tag d3">Domain 3</span></td></tr>
+      <tr><td>String-typed CSV → Pydantic coercion</td><td>Structured output · type enforcement</td><td><span class="domain-tag d4">Domain 4</span></td></tr>
+      <tr><td>JSON-RPC id correlation across calls</td><td>Context management · multi-turn tool state</td><td><span class="domain-tag d5">Domain 5</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════════════ QUICK REF ══════════════════ -->
+<section>
+  <h2>Quick reference card</h2>
+  <div class="qr">
+    <div class="qr-title">Golden path — run every time to verify everything</div>
+    <span style="color:#4f8ef7">cd</span> ~/mcp-annuities-server && <span style="color:#4f8ef7">source</span> .venv/bin/activate<br>
+    <span style="color:#2dd4bf">python</span> test_client.py              <span style="color:#8892a4"># standalone sanity check</span><br>
+    <span style="color:#2dd4bf">claude</span> mcp list                     <span style="color:#8892a4"># should show ✔ Connected</span><br>
+    <span style="color:#2dd4bf">claude</span>                               <span style="color:#8892a4"># launch Claude Code</span><br>
+    /mcp                                 <span style="color:#8892a4"># verify tools loaded</span><br>
+    <span style="color:#a78bfa">"Use annuities-server to look up CLIENT_0001"</span>
+  </div>
+  <div class="qr">
+    <div class="qr-title">Fix auth (if showing Opus / API billing instead of Pro)</div>
+    <span style="color:#2dd4bf">claude</span> /logout → re-login → choose <span style="color:#fbbf24">claude.ai</span>, decline API key<br>
+    — OR —<br>
+    <span style="color:#4f8ef7">unset</span> ANTHROPIC_API_KEY && <span style="color:#2dd4bf">claude</span>
+  </div>
+  <div class="qr">
+    <div class="qr-title">Fix ✘ Failed to connect (wrong Python path)</div>
+    <span style="color:#2dd4bf">claude</span> mcp remove annuities-server<br>
+    <span style="color:#2dd4bf">claude</span> mcp add annuities-server -- <span style="color:#fbbf24">"$(pwd)/.venv/bin/python"</span> server.py<br>
+    <span style="color:#8892a4"># NOT: realpath .venv/bin/python  ← follows symlink to system Python</span>
+  </div>
+</section>
+
+<!-- ══════════════════ EXTEND ══════════════════ -->
+<section>
+  <h2>Extending this (Domain 2 practice exercises)</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num blue">A</div>
+      <div class="step-body">
+        <div class="step-title">Add a 6th tool</div>
+        <p>Add a new <code>@mcp.tool()</code> to <code>server.py</code>, restart Claude Code, and ask it to do something that could match either the new tool or an existing one. Does Claude pick the right one? At what point does tool-count cause selection failures? This is the live "reasoning overload" experiment the transcript warns about.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num purple">B</div>
+      <div class="step-body">
+        <div class="step-title">Add SSE transport</div>
+        <p>See <code>~/ccaf-annuities-lab/domain2_mcp_integration/03_sse_transport/sse_server.py</code> for a FastAPI-based HTTP/SSE version of the same server. The tool schemas stay identical — only the transport layer changes. This is the exam's stdio vs SSE contrast.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num teal">C</div>
+      <div class="step-body">
+        <div class="step-title">Add a 4th prompt template</div>
+        <p>Create <code>templates/surrender_analysis/</code> with <code>config.yaml</code> + <code>template.md</code>, then add a thin <code>@mcp.prompt("surrender_analysis")</code> wrapper in <code>server.py</code>. No other changes needed — demonstrates data-driven prompt design.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+</body>
+</html>
