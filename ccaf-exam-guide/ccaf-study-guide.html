@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCAF Study Guide — Claude Certified Architect Foundations 2026</title>
+<style>
+:root{--bg:#0f1117;--surface:#181c27;--surface2:#1e2336;--border:#2a3050;--text:#e2e8f0;--muted:#8892a4;--d1:#7F77DD;--d1l:#EEEDFE;--d1d:#3C3489;--d2:#1D9E75;--d2l:#E1F5EE;--d2d:#085041;--d3:#BA7517;--d3l:#FAEEDA;--d3d:#633806;--d4:#993556;--d4l:#FBEAF0;--d4d:#4B1528;--d5:#185FA5;--d5l:#E6F1FB;--d5d:#0C447C;--green:#4ade80;--red:#f87171;--amber:#fbbf24;--mono:'Fira Code',Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.7}
+a{color:var(--d1);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:0 0 40px}
+.nav-logo{padding:20px 20px 16px;font-size:13px;font-weight:600;border-bottom:1px solid var(--border);color:var(--text)}
+.nav-logo span{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:2px}
+.nav-section{padding:12px 20px 4px;font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.nav-link{display:block;padding:6px 20px;font-size:12px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.nav-link:hover,.nav-link.active{color:var(--text);background:var(--surface2);border-left-color:var(--d1)}
+.nav-domain{display:block;padding:7px 20px;font-size:12px;font-weight:500;cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.nav-domain:hover{background:var(--surface2)}
+.d1-nav:hover,.d1-nav.active{border-left-color:var(--d1);color:#a5b4fc}
+.d2-nav:hover,.d2-nav.active{border-left-color:var(--d2);color:#6ee7b7}
+.d3-nav:hover,.d3-nav.active{border-left-color:var(--d3);color:#fcd34d}
+.d4-nav:hover,.d4-nav.active{border-left-color:var(--d4);color:#f9a8d4}
+.d5-nav:hover,.d5-nav.active{border-left-color:var(--d5);color:#93c5fd}
+
+/* ── MAIN ── */
+.main{margin-left:240px;padding:0}
+.section{padding:48px 52px;border-bottom:1px solid var(--border);min-height:100px}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1f35 60%,#0f1117 100%);padding:60px 52px 48px;border-bottom:1px solid var(--border)}
+.hero-badge{display:inline-block;background:rgba(127,119,221,.15);color:#a5b4fc;border:1px solid rgba(127,119,221,.3);border-radius:20px;font-size:11px;font-family:var(--mono);padding:4px 14px;margin-bottom:20px;letter-spacing:.05em}
+.hero h1{font-size:32px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px;background:linear-gradient(90deg,#a5b4fc,#7F77DD,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);max-width:580px;margin-bottom:28px}
+.stat-row{display:flex;gap:12px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 20px;text-align:center}
+.stat-val{font-size:22px;font-weight:600;color:var(--text);font-family:var(--mono)}
+.stat-label{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── DOMAIN WEIGHT BAR ── */
+.weight-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:20px 0 8px}
+.wb1{flex:2.7;background:var(--d1)}
+.wb2{flex:1.8;background:var(--d2)}
+.wb3{flex:2.0;background:var(--d3)}
+.wb4{flex:2.0;background:var(--d4)}
+.wb5{flex:1.5;background:var(--d5)}
+.legend-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* ── TYPOGRAPHY ── */
+h2{font-size:22px;font-weight:600;margin-bottom:20px;color:var(--text)}
+h3{font-size:16px;font-weight:600;margin:28px 0 12px;color:var(--text)}
+h4{font-size:13px;font-weight:600;margin:20px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+p{color:var(--muted);margin-bottom:14px}
+strong{color:var(--text);font-weight:600}
+ul,ol{padding-left:20px;margin-bottom:14px}
+li{color:var(--muted);margin-bottom:6px;line-height:1.6}
+
+/* ── DOMAIN HEADERS ── */
+.domain-header{border-radius:10px;padding:20px 24px;margin-bottom:28px;border:1px solid}
+.d1-header{background:rgba(127,119,221,.08);border-color:rgba(127,119,221,.25)}
+.d2-header{background:rgba(29,158,117,.08);border-color:rgba(29,158,117,.25)}
+.d3-header{background:rgba(186,117,23,.08);border-color:rgba(186,117,23,.25)}
+.d4-header{background:rgba(153,53,86,.08);border-color:rgba(153,53,86,.25)}
+.d5-header{background:rgba(24,95,165,.08);border-color:rgba(24,95,165,.25)}
+.dh-pct{font-size:32px;font-weight:700;font-family:var(--mono);margin-bottom:4px}
+.dh-title{font-size:18px;font-weight:600;margin-bottom:6px}
+.dh-desc{font-size:13px;color:var(--muted)}
+
+/* ── CARDS ── */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:16px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.card-title{font-size:13px;font-weight:600;margin-bottom:6px}
+.card-body{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ── CODE ── */
+pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.7;color:#c9d1d9;margin:12px 0 18px}
+code{font-family:var(--mono);font-size:12px;color:#7F77DD;background:var(--surface2);padding:1px 5px;border-radius:3px}
+pre code{background:transparent;padding:0;color:inherit}
+.cm{color:var(--muted)}
+.ck{color:#7F77DD}
+.cs{color:#6ee7b7}
+.cv{color:#fbbf24}
+.co{color:#f87171}
+.cg{color:#4ade80}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.6;border-left:3px solid}
+.c-warn{background:rgba(248,113,113,.08);border-color:#f87171;color:#fca5a5}
+.c-tip{background:rgba(74,222,128,.08);border-color:#4ade80;color:#86efac}
+.c-info{background:rgba(127,119,221,.08);border-color:#7F77DD;color:#a5b4fc}
+.c-amber{background:rgba(251,191,36,.08);border-color:#fbbf24;color:#fcd34d}
+
+/* ── TABLES ── */
+table{width:100%;border-collapse:collapse;margin:14px 0 20px;font-size:12px}
+th{background:var(--surface);color:var(--text);font-weight:600;text-align:left;padding:9px 12px;border:1px solid var(--border)}
+td{padding:8px 12px;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+tr:hover td{background:var(--surface)}
+
+/* ── PILLS ── */
+.pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:10px;font-weight:600;margin:2px;letter-spacing:.02em}
+.p-d1{background:rgba(127,119,221,.15);color:#a5b4fc}
+.p-d2{background:rgba(29,158,117,.15);color:#6ee7b7}
+.p-d3{background:rgba(186,117,23,.15);color:#fcd34d}
+.p-d4{background:rgba(153,53,86,.15);color:#f9a8d4}
+.p-d5{background:rgba(24,95,165,.15);color:#93c5fd}
+.p-warn{background:rgba(248,113,113,.15);color:#fca5a5}
+.p-ok{background:rgba(74,222,128,.15);color:#86efac}
+
+/* ── QUIZ ── */
+.quiz-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:14px}
+.quiz-q{font-size:13px;font-weight:500;margin-bottom:14px;line-height:1.6}
+.quiz-q-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;margin-right:8px;vertical-align:middle}
+.choices{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.choice{padding:9px 14px;border-radius:6px;border:1px solid var(--border);font-size:12px;cursor:pointer;transition:all .15s;color:var(--muted);background:var(--surface2)}
+.choice:hover{border-color:#7F77DD;color:var(--text)}
+.choice.correct{background:rgba(74,222,128,.1);border-color:#4ade80;color:#86efac}
+.choice.wrong{background:rgba(248,113,113,.1);border-color:#f87171;color:#fca5a5}
+.explanation{font-size:12px;color:var(--muted);padding:10px 14px;background:var(--surface2);border-radius:6px;line-height:1.6;display:none;margin-top:4px}
+.explanation.show{display:block}
+.quiz-progress{font-size:11px;color:var(--muted);margin-bottom:20px}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:4px}
+.progress-fill{height:100%;background:var(--d1);border-radius:2px;transition:width .3s}
+.score-display{display:none;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;text-align:center;margin-bottom:20px}
+.score-display.show{display:block}
+.score-num{font-size:48px;font-weight:700;font-family:var(--mono);margin-bottom:8px}
+.score-pass{color:#4ade80}
+.score-fail{color:#f87171}
+
+/* ── CHEAT SHEET ── */
+.cheat-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.cheat-row:last-child{border-bottom:none}
+.cheat-key{font-size:12px;font-weight:600;min-width:200px;flex-shrink:0;font-family:var(--mono);color:#7F77DD}
+.cheat-val{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:1px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-dot{position:absolute;left:-24px;top:4px;width:12px;height:12px;border-radius:50%;border:2px solid var(--border);background:var(--bg)}
+.tl-item.done .tl-dot{background:#4ade80;border-color:#4ade80}
+.tl-week{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.tl-task{font-size:13px;font-weight:500;margin-bottom:4px}
+.tl-detail{font-size:12px;color:var(--muted)}
+
+/* ── RESOURCES ── */
+.res-list{display:flex;flex-direction:column;gap:8px}
+.res-item{display:flex;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;align-items:flex-start}
+.res-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.res-title{font-size:13px;font-weight:500;margin-bottom:2px}
+.res-desc{font-size:12px;color:var(--muted)}
+.res-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.rb-free{background:rgba(74,222,128,.15);color:#86efac}
+.rb-paid{background:rgba(251,191,36,.15);color:#fcd34d}
+.rb-done{background:rgba(29,158,117,.15);color:#6ee7b7}
+
+/* ── COMPARISON TABLE ── */
+.comp-wrap{overflow-x:auto}
+.comp-table{min-width:700px}
+.comp-table .feat-header{text-align:center;padding:10px 8px}
+.comp-table .feat-icon{font-size:16px;display:block;margin-bottom:3px}
+.comp-table .feat-name{font-size:11px;font-weight:600}
+.comp-table td.center{text-align:center}
+
+/* ── SCROLLSPY / PRINT ── */
+@media print{
+  .nav{display:none}
+  .main{margin-left:0}
+  .section{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR NAV ══ -->
+<nav class="nav">
+  <div class="nav-logo">CCAF Study Guide <span>Claude Certified Architect Foundations 2026</span></div>
+
+  <div class="nav-section">Overview</div>
+  <a class="nav-link" onclick="scrollTo('overview')">Exam facts</a>
+  <a class="nav-link" onclick="scrollTo('comparison')">Features comparison</a>
+  <a class="nav-link" onclick="scrollTo('timeline')">8-week plan</a>
+
+  <div class="nav-section">Domain 1 — 27%</div>
+  <a class="nav-domain d1-nav" onclick="scrollTo('d1')">Agentic Architecture</a>
+  <a class="nav-link" onclick="scrollTo('d1-loop')">Agentic loop</a>
+  <a class="nav-link" onclick="scrollTo('d1-patterns')">Orchestration patterns</a>
+  <a class="nav-link" onclick="scrollTo('d1-hooks')">Hooks &amp; enforcement</a>
+  <a class="nav-link" onclick="scrollTo('d1-session')">Session management</a>
+
+  <div class="nav-section">Domain 2 — 18%</div>
+  <a class="nav-domain d2-nav" onclick="scrollTo('d2')">Tool Design &amp; MCP</a>
+  <a class="nav-link" onclick="scrollTo('d2-server')">MCP server anatomy</a>
+  <a class="nav-link" onclick="scrollTo('d2-transport')">stdio vs SSE</a>
+  <a class="nav-link" onclick="scrollTo('d2-schemas')">Tool schema design</a>
+
+  <div class="nav-section">Domain 3 — 20%</div>
+  <a class="nav-domain d3-nav" onclick="scrollTo('d3')">Claude Code Config</a>
+  <a class="nav-link" onclick="scrollTo('d3-hierarchy')">CLAUDE.md hierarchy</a>
+  <a class="nav-link" onclick="scrollTo('d3-commands')">Slash commands</a>
+  <a class="nav-link" onclick="scrollTo('d3-cicd')">CI/CD integration</a>
+
+  <div class="nav-section">Domain 4 — 20%</div>
+  <a class="nav-domain d4-nav" onclick="scrollTo('d4')">Prompt Engineering</a>
+  <a class="nav-link" onclick="scrollTo('d4-schema')">JSON schema output</a>
+  <a class="nav-link" onclick="scrollTo('d4-retry')">Validation retry loop</a>
+  <a class="nav-link" onclick="scrollTo('d4-fewshot')">Few-shot techniques</a>
+  <a class="nav-link" onclick="scrollTo('d4-batch')">Batch API</a>
+
+  <div class="nav-section">Domain 5 — 15%</div>
+  <a class="nav-domain d5-nav" onclick="scrollTo('d5')">Context Management</a>
+  <a class="nav-link" onclick="scrollTo('d5-handoff')">Handoff patterns</a>
+  <a class="nav-link" onclick="scrollTo('d5-caching')">Prompt caching</a>
+  <a class="nav-link" onclick="scrollTo('d5-confidence')">Confidence calibration</a>
+
+  <div class="nav-section">Practice</div>
+  <a class="nav-link" onclick="scrollTo('quiz')">20-question quiz</a>
+  <a class="nav-link" onclick="scrollTo('cheatsheet')">Cheat sheet</a>
+  <a class="nav-link" onclick="scrollTo('antipatterns')">Anti-patterns</a>
+  <a class="nav-link" onclick="scrollTo('resources')">Resources</a>
+</nav>
+
+<!-- ══ MAIN CONTENT ══ -->
+<main class="main">
+
+<!-- HERO -->
+<div class="hero" id="overview">
+  <div class="hero-badge">CCA-F · Launched March 12, 2026 · Anthropic</div>
+  <h1>Claude Certified Architect Foundations</h1>
+  <p>Complete study guide covering all 5 domains, code patterns, anti-patterns, a 20-question practice quiz, and a printable cheat sheet. Built from your hands-on annuities lab project.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-val">60</div><div class="stat-label">questions</div></div>
+    <div class="stat"><div class="stat-val">120</div><div class="stat-label">minutes</div></div>
+    <div class="stat"><div class="stat-val">720</div><div class="stat-label">pass / 1000</div></div>
+    <div class="stat"><div class="stat-val">$99</div><div class="stat-label">exam fee</div></div>
+    <div class="stat"><div class="stat-val">6mo</div><div class="stat-label">rec. experience</div></div>
+  </div>
+
+  <div style="margin-top:24px">
+    <div class="weight-bar"><div class="wb1"></div><div class="wb2"></div><div class="wb3"></div><div class="wb4"></div><div class="wb5"></div></div>
+    <div class="legend-row">
+      <span class="leg"><span class="leg-dot" style="background:var(--d1)"></span>D1 Agentic 27%</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--d2)"></span>D2 MCP 18%</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--d3)"></span>D3 Claude Code 20%</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--d4)"></span>D4 Prompts 20%</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--d5)"></span>D5 Context 15%</span>
+    </div>
+  </div>
+
+  <div class="callout c-info" style="margin-top:20px"><strong>Exam format:</strong> All 60 questions are scenario-based — you are placed inside a production situation and asked to make the correct architectural call. Two answers often both "work"; the exam rewards the one with narrower scope, higher reliability, and correct pattern usage.</div>
+</div>
+
+<!-- FEATURES COMPARISON -->
+<div class="section" id="comparison">
+  <h2>Claude Code features — comparison matrix</h2>
+  <p>Know the difference between these 6 features. The exam regularly presents two as options for the same scenario.</p>
+  <div class="comp-wrap">
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th style="width:130px">Dimension</th>
+        <th class="feat-header"><span class="feat-icon">🔧</span><span class="feat-name">Skills</span></th>
+        <th class="feat-header"><span class="feat-icon">🔌</span><span class="feat-name">MCP servers</span></th>
+        <th class="feat-header"><span class="feat-icon">🤖</span><span class="feat-name">Sub-agents</span></th>
+        <th class="feat-header"><span class="feat-icon">⚡</span><span class="feat-name">Hooks</span></th>
+        <th class="feat-header"><span class="feat-icon">📄</span><span class="feat-name">CLAUDE.md</span></th>
+        <th class="feat-header"><span class="feat-icon">💻</span><span class="feat-name">Slash commands</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Invocation</strong></td><td>Implicit — loaded at session start</td><td>Tool call — model decides when to call</td><td>Task tool — coordinator spawns</td><td>Automatic — SDK fires at loop points</td><td>Automatic — always in system prompt</td><td>Explicit — user types /command</td></tr>
+      <tr><td><strong>Context scope</strong></td><td>Session-wide</td><td>Per-call only</td><td>Fully isolated per subagent</td><td>Single intercept point</td><td>Always present every turn</td><td>On-demand, one turn</td></tr>
+      <tr><td><strong>Predictability</strong></td><td><span class="pill p-d3">High</span> probabilistic</td><td><span class="pill p-d2">High</span> ~99% tool selection</td><td><span class="pill p-d3">Medium</span> coordinator decides</td><td><span class="pill p-ok">100%</span> code runs</td><td><span class="pill p-d3">High</span> probabilistic</td><td><span class="pill p-d2">High</span> user triggers</td></tr>
+      <tr><td><strong>Token efficiency</strong></td><td><span class="pill p-warn">Low</span> burns tokens/session</td><td><span class="pill p-ok">High</span> schema only</td><td><span class="pill p-d3">Medium</span> isolated windows</td><td><span class="pill p-ok">Very high</span> zero tokens</td><td><span class="pill p-warn">Low</span> every turn</td><td><span class="pill p-ok">High</span> on demand</td></tr>
+      <tr><td><strong>Best for</strong></td><td>Reusable workflows (smart_commit)</td><td>External data, APIs, calculators</td><td>Parallel work, specialist domains</td><td>Policy gates, data normalisation</td><td>Project conventions, coding rules</td><td>On-demand reports, checklists</td></tr>
+      <tr><td><strong>Key file</strong></td><td><code>~/.claude/skills/</code></td><td><code>server.py</code>, <code>~/.claude.json</code></td><td><code>orchestrator.py</code></td><td>Agent SDK hooks</td><td><code>CLAUDE.md</code></td><td><code>.claude/commands/</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout c-info" style="margin-top:16px"><strong>Decision rule:</strong> Hooks = 100% compliance (use for financial gates). MCP = live data with zero wasted tokens. Sub-agents = parallelism + isolation. CLAUDE.md = keep under 500 tokens or it costs context every turn. Slash commands = zero overhead until invoked.</div>
+</div>
+
+<!-- ══ DOMAIN 1 ══ -->
+<div class="section" id="d1">
+  <div class="domain-header d1-header">
+    <div class="dh-pct" style="color:var(--d1)">27%</div>
+    <div class="dh-title">Domain 1 — Agentic Architecture &amp; Orchestration</div>
+    <div class="dh-desc">~16 of 60 questions · Most underestimated domain · Judgment over memorisation</div>
+  </div>
+
+  <h3 id="d1-loop">The agentic loop — exact lifecycle</h3>
+  <div class="callout c-warn"><strong>Critical:</strong> Always terminate on <code>stop_reason === "end_turn"</code>. Never parse text content to detect completion. This is the single most-tested anti-pattern in Domain 1.</div>
+  <pre><span class="cm"># The canonical 6-step loop</span>
+<span class="ck">while</span> True:
+    response = client.messages.create(
+        model=<span class="cs">"claude-opus-4-5"</span>,
+        max_tokens=<span class="cv">4096</span>,
+        tools=tools,
+        messages=messages
+    )
+
+    <span class="ck">if</span> response.stop_reason == <span class="cs">"end_turn"</span>:    <span class="cm"># ← PRIMARY STOP</span>
+        <span class="ck">return</span> response.content[<span class="cv">0</span>].text
+
+    <span class="ck">if</span> response.stop_reason != <span class="cs">"tool_use"</span>:
+        <span class="ck">raise</span> RuntimeError(f<span class="cs">"Unexpected: {response.stop_reason}"</span>)
+
+    <span class="cm"># Step 4: append assistant message FIRST</span>
+    messages.append({<span class="cs">"role"</span>: <span class="cs">"assistant"</span>, <span class="cs">"content"</span>: response.content})
+
+    <span class="cm"># Step 5: execute ALL tool calls</span>
+    tool_results = []
+    <span class="ck">for</span> block <span class="ck">in</span> response.content:
+        <span class="ck">if</span> block.type == <span class="cs">"tool_use"</span>:
+            result = execute_tool(block.name, block.input)
+            tool_results.append({
+                <span class="cs">"type"</span>: <span class="cs">"tool_result"</span>,
+                <span class="cs">"tool_use_id"</span>: block.id,
+                <span class="cs">"content"</span>: json.dumps(result)
+            })
+
+    <span class="cm"># Step 6: tool results go back as USER message</span>
+    messages.append({<span class="cs">"role"</span>: <span class="cs">"user"</span>, <span class="cs">"content"</span>: tool_results})</pre>
+
+  <h3 id="d1-patterns">Orchestration patterns</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--d1)">🏛️ Hub-and-spoke (most tested)</div>
+      <div class="card-body">One coordinator → N specialist subagents. All inter-agent communication routes through the hub. Subagents have <strong>fully isolated context</strong> — they see only what coordinator explicitly passes. Parallel spawning = multiple Task calls in ONE response turn.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--d2)">⛓️ Pipeline (sequential)</div>
+      <div class="card-body">Agent A output → Agent B input → Agent C. Use ONLY when each step genuinely depends on the prior output. Choosing pipeline when steps are independent wastes latency — the exam tests this tradeoff.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--d3)">⚡ Parallel fan-out</div>
+      <div class="card-body">Independent subtasks run simultaneously. Emit ALL Task calls in one coordinator response turn = concurrent. Separate turns = sequential. This distinction is a frequent exam question.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--d4)">🔄 Evaluator-optimizer</div>
+      <div class="card-body">Generator → Evaluator judges quality → Coordinator re-delegates if criteria not met → repeat until quality bar or MAX_ROUNDS. Always set a ceiling to prevent infinite loops.</div>
+    </div>
+  </div>
+
+  <h3 id="d1-hooks">Hooks &amp; enforcement</h3>
+  <div class="callout c-tip"><strong>Hooks = 100% compliance. Prompt rules = ~99%.</strong> For financial gates, PII checks, and security policies, hooks are always the architecturally correct answer.</div>
+  <table>
+    <thead><tr><th>Hook type</th><th>When it fires</th><th>Use for</th></tr></thead>
+    <tbody>
+      <tr><td><code>PostToolUse</code></td><td>After tool execution, before Claude sees result</td><td>Data normalisation (timestamps, status codes, string→float)</td></tr>
+      <tr><td>Interception hook</td><td>Before tool execution</td><td>Policy gates: refund > $500 → escalate. PII detection. Auth checks.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="d1-session">Session management</h3>
+  <table>
+    <thead><tr><th>Operation</th><th>When to use</th><th>When NOT to use</th></tr></thead>
+    <tbody>
+      <tr><td><code>--resume &lt;session&gt;</code></td><td>Prior context mostly valid; continuing same work</td><td>Files changed — must explicitly tell Claude which ones changed</td></tr>
+      <tr><td><code>fork_session</code></td><td>Two independent approaches from same baseline</td><td>Handling stale file content (use new session + injected summary)</td></tr>
+      <tr><td>New session + summary</td><td>Prior tool results stale; fundamental assumption changed</td><td>When context is valid (unnecessary re-injection costs tokens)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ DOMAIN 2 ══ -->
+<div class="section" id="d2">
+  <div class="domain-header d2-header">
+    <div class="dh-pct" style="color:var(--d2)">18%</div>
+    <div class="dh-title">Domain 2 — Tool Design &amp; MCP Integration</div>
+    <div class="dh-desc">~11 of 60 questions · Build a server — don't just read about one</div>
+  </div>
+
+  <h3 id="d2-server">MCP server anatomy</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-title" style="color:var(--d2)">🔧 Tools</div><div class="card-body">Functions Claude can call. Defined with JSON Schema input_schema. Named, typed, validated before execution. Keep count to ≤7 — too many tools degrades tool-selection reliability.</div></div>
+    <div class="card"><div class="card-title" style="color:var(--d3)">📄 Resources</div><div class="card-body">Static or dynamic data the server can serve. URI-addressed (e.g. <code>annuities://dataset</code>). Client reads them directly — no tool call overhead. Good for large reference data.</div></div>
+    <div class="card"><div class="card-title" style="color:var(--d4)">📝 Prompts</div><div class="card-body">Reusable prompt templates the server exposes. YAML-driven (config.yaml + template.md). Loaded on-demand — zero context cost until invoked. Good for domain-specific workflows.</div></div>
+  </div>
+
+  <pre><span class="cm"># FastMCP — the idiomatic server pattern</span>
+<span class="ck">from</span> mcp.server.fastmcp <span class="ck">import</span> FastMCP
+
+mcp = FastMCP(<span class="cs">"annuities-server"</span>)
+
+<span class="cv">@mcp.tool()</span>
+<span class="ck">def</span> get_client(client_id: str) -> dict:
+    <span class="cs">"""Retrieve full annuity contract details for one client by ID."""</span>
+    <span class="cm"># Description text = what Claude uses for tool selection</span>
+    ...
+
+<span class="cv">@mcp.resource(</span><span class="cs">"annuities://dataset"</span><span class="cv">)</span>
+<span class="ck">def</span> get_dataset() -> str:
+    <span class="ck">return</span> DATA_FILE.read_text()
+
+<span class="cv">@mcp.prompt(</span><span class="cs">"annuity_review"</span><span class="cv">)</span>
+<span class="ck">def</span> annuity_review(client_id: str) -> str:
+    _, template = load_template(<span class="cs">"annuity_review"</span>)
+    <span class="ck">return</span> fill(template, client_id=client_id)</pre>
+
+  <h3 id="d2-transport">stdio vs SSE transport</h3>
+  <table>
+    <thead><tr><th>Dimension</th><th>stdio</th><th>SSE (HTTP)</th></tr></thead>
+    <tbody>
+      <tr><td>Deployment</td><td>Local subprocess</td><td>Networked server — any host</td></tr>
+      <tr><td>Clients</td><td>Single client (one connection)</td><td>Multi-client</td></tr>
+      <tr><td>Protocol</td><td>JSON-RPC over stdin/stdout pipes</td><td>JSON-RPC over Server-Sent Events</td></tr>
+      <tr><td>Auth</td><td>Process-level (same user)</td><td>API key / OAuth / JWT required</td></tr>
+      <tr><td>Claude Code config</td><td><code>claude mcp add &lt;name&gt; -- python server.py</code></td><td>URL in settings</td></tr>
+      <tr><td>Debug tool</td><td>MCP Inspector (Stdio mode)</td><td>MCP Inspector (SSE mode)</td></tr>
+      <tr><td>Use when</td><td>Local dev, single user, Claude Code CLI</td><td>Shared team server, cloud deployment</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="d2-schemas">Tool schema design rules</h3>
+  <div class="callout c-warn"><strong>Too many tools breaks tool selection.</strong> The exam will test you on this. Keep tool count ≤7. Every tool added after ~5 increases the probability of Claude picking the wrong one. This is the "tool boundary / reasoning overload" concept.</div>
+  <table>
+    <thead><tr><th>Rule</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td>Description must be specific and action-oriented</td><td>Tool selection is pattern-matching against description text</td></tr>
+      <tr><td>Use <code>enum</code> for fields with fixed valid values</td><td>Prevents invalid values without runtime validation code</td></tr>
+      <tr><td>Mark genuinely optional fields with <code>required: []</code> exclusion</td><td>Forces Claude to pass required args — API rejects missing ones</td></tr>
+      <tr><td>Return structured errors, not exceptions</td><td>Unhandled exceptions produce opaque MCP errors Claude can't reason about</td></tr>
+      <tr><td>Never print() in server.py</td><td>stdout is reserved for JSON-RPC protocol — print corrupts the stream</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ DOMAIN 3 ══ -->
+<div class="section" id="d3">
+  <div class="domain-header d3-header">
+    <div class="dh-pct" style="color:var(--d3)">20%</div>
+    <div class="dh-title">Domain 3 — Claude Code Configuration &amp; Workflows</div>
+    <div class="dh-desc">~12 of 60 questions · Hands-on configuration, not theory</div>
+  </div>
+
+  <h3 id="d3-hierarchy">CLAUDE.md hierarchy</h3>
+  <p>CLAUDE.md files are loaded in order from most global to most specific. All non-conflicting rules from all levels apply simultaneously. More specific files win on conflicts.</p>
+  <pre><span class="cm"># Precedence order (most specific wins on conflicts)</span>
+~/.claude/CLAUDE.md              <span class="cm"># 1. User-global — applies everywhere</span>
+~/project/CLAUDE.md              <span class="cm"># 2. Project root — applies to whole project</span>
+~/project/domain1/CLAUDE.md      <span class="cm"># 3. Subfolder — applies to that domain</span>
+~/project/domain1/sub/CLAUDE.md  <span class="cm"># 4. Deep subfolder — most specific</span></pre>
+  <div class="callout c-info"><strong>Token cost:</strong> Every CLAUDE.md level costs tokens on every turn. The <code>/context</code> command shows "Memory files: N tokens". Keep each CLAUDE.md under 500 tokens — verbose files dilute Claude's adherence to the rules.</div>
+
+  <h3 id="d3-commands">Custom slash commands</h3>
+  <pre><span class="cm"># Location: .claude/commands/annuity-report.md</span>
+<span class="cm"># Usage in Claude Code: /annuity-report [CA]</span>
+
+Generate a portfolio summary report from data/annuities.csv.
+
+<span class="cs">## Instructions for Claude Code</span>
+<span class="cv">1.</span> Read data/annuities.csv using pandas
+<span class="cv">2.</span> If $ARGUMENTS provided, filter to that state
+<span class="cv">3.</span> Calculate totals, averages, breakdowns
+<span class="cv">4.</span> Save to reports/portfolio_summary.md</pre>
+  <p>Slash commands have <strong>zero overhead</strong> until invoked. Token-efficient alternative to putting workflow instructions in CLAUDE.md. Use for on-demand, intentionally-triggered workflows.</p>
+
+  <h3 id="d3-cicd">CI/CD integration</h3>
+  <pre><span class="cm"># GitHub Actions — Claude as non-interactive code reviewer</span>
+- name: Claude review changed files
+  run: python scripts/claude_reviewer.py ${{ steps.changed.outputs.files }}
+  env:
+    ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+<span class="cm"># claude -p = non-interactive print mode</span>
+<span class="cm"># Perfect for CI/CD — no terminal UI, just output</span>
+claude -p <span class="cs">"Review this file for bugs: ..."</span></pre>
+
+  <table>
+    <thead><tr><th>Feature</th><th>How to use it</th><th>CCAF relevance</th></tr></thead>
+    <tbody>
+      <tr><td><code>/model</code></td><td>Switch model in-session</td><td>Model selection per task type (Opus for complex, Haiku for fast)</td></tr>
+      <tr><td><code>/context</code></td><td>See token breakdown</td><td>Context management; keep CLAUDE.md lean</td></tr>
+      <tr><td><code>/mcp</code></td><td>List connected MCP servers</td><td>Verify server connection; troubleshoot ✘ Failed to connect</td></tr>
+      <tr><td><code>/memory</code></td><td>Open CLAUDE.md for editing</td><td>Hierarchy management, project context</td></tr>
+      <tr><td><code>claude -p "..."</code></td><td>Non-interactive mode</td><td>CI/CD pipeline integration (Domain 3 exam topic)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ DOMAIN 4 ══ -->
+<div class="section" id="d4">
+  <div class="domain-header d4-header">
+    <div class="dh-pct" style="color:var(--d4)">20%</div>
+    <div class="dh-title">Domain 4 — Prompt Engineering &amp; Structured Output</div>
+    <div class="dh-desc">~12 of 60 questions · Schema enforcement, retry loops, batch API</div>
+  </div>
+
+  <h3 id="d4-schema">JSON schema enforcement</h3>
+  <div class="callout c-info"><strong>Format instructions belong in the SYSTEM prompt, not the user prompt.</strong> This is the most-tested Domain 4 rule. System prompt = format and schema. User prompt = the data to process.</div>
+  <pre><span class="cm"># System prompt carries the schema</span>
+SYSTEM_PROMPT = <span class="cs">f"""You are an annuity recommendation engine.
+Return ONLY a JSON object matching this exact schema:
+{json.dumps(AnnuityRecommendation.model_json_schema(), indent=2)}
+
+Rules:
+- recommended_action: HOLD | EXCHANGE | SURRENDER | CONVERT
+- urgency: HIGH if surrender_charge_pct > 7 or age > 70
+- confidence_score: 0.0–1.0
+- No other text, no markdown fences."""</span></pre>
+
+  <h3 id="d4-retry">Validation retry loop</h3>
+  <pre><span class="ck">def</span> get_recommendation(record: dict, max_retries=<span class="cv">3</span>):
+    messages = [{<span class="cs">"role"</span>: <span class="cs">"user"</span>, <span class="cs">"content"</span>: json.dumps(record)}]
+    last_error = <span class="cs">""</span>
+
+    <span class="ck">for</span> attempt <span class="ck">in</span> range(<span class="cv">1</span>, max_retries + <span class="cv">1</span>):
+        <span class="ck">if</span> last_error:
+            <span class="cm"># Feed SPECIFIC error back — not just "try again"</span>
+            messages.append({<span class="cs">"role"</span>: <span class="cs">"assistant"</span>, <span class="cs">"content"</span>: last_error})
+            messages.append({<span class="cs">"role"</span>: <span class="cs">"user"</span>, <span class="cs">"content"</span>:
+                f<span class="cs">"Validation failed: {last_error}\n"</span>
+                <span class="cs">"Fix the specific field and return valid JSON."</span>})
+
+        resp = client.messages.create(
+            model=MODEL, max_tokens=<span class="cv">512</span>, system=SYSTEM_PROMPT, messages=messages)
+        raw = resp.content[<span class="cv">0</span>].text.strip()
+
+        <span class="ck">try</span>:
+            data = json.loads(raw)
+            result = AnnuityRecommendation(**data)   <span class="cm"># Pydantic validates</span>
+            <span class="ck">return</span> result                           <span class="cg"># ✅ success</span>
+        <span class="ck">except</span> (json.JSONDecodeError, ValidationError) <span class="ck">as</span> e:
+            last_error = str(e)[:200]               <span class="cm"># capture for next turn</span>
+
+    <span class="ck">raise</span> RuntimeError(<span class="cs">f"Failed after {max_retries} attempts"</span>)</pre>
+
+  <h3 id="d4-fewshot">Few-shot techniques</h3>
+  <table>
+    <thead><tr><th>Good for</th><th>Not effective for</th></tr></thead>
+    <tbody>
+      <tr><td>Output format demonstration</td><td>Guaranteeing policy compliance (use hooks)</td></tr>
+      <tr><td>Reasoning style replication</td><td>Enforcing ordering rules (use programmatic check)</td></tr>
+      <tr><td>Edge case handling (show ambiguous examples)</td><td>Replacing a well-designed schema</td></tr>
+      <tr><td>Tone and style calibration</td><td>Ensuring mathematical accuracy (validate in code)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout c-info">Few-shot examples go in the SYSTEM prompt as static context. Cover: (1) normal case, (2) edge case, (3) a negative example showing what NOT to output. 3–5 examples is the sweet spot.</div>
+
+  <h3 id="d4-batch">Batch API decision matrix</h3>
+  <table>
+    <thead><tr><th>Criterion</th><th>Batch API</th><th>Synchronous API</th></tr></thead>
+    <tbody>
+      <tr><td>User waiting for response?</td><td class="center">No</td><td class="center">Yes → always sync</td></tr>
+      <tr><td>Latency requirement</td><td>Hours (24h window)</td><td>Seconds (real-time)</td></tr>
+      <tr><td>Volume</td><td>100 → millions</td><td>Any</td></tr>
+      <tr><td>Cost priority</td><td>50% cost reduction</td><td>Secondary concern</td></tr>
+      <tr><td>Hard SLA?</td><td class="center">No</td><td class="center">Yes → always sync</td></tr>
+      <tr><td>Blocking pipeline step?</td><td class="center">Never</td><td class="center">Yes</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ DOMAIN 5 ══ -->
+<div class="section" id="d5">
+  <div class="domain-header d5-header">
+    <div class="dh-pct" style="color:var(--d5)">15%</div>
+    <div class="dh-title">Domain 5 — Context Management &amp; Reliability</div>
+    <div class="dh-desc">~9 of 60 questions · Context efficiency, caching, confidence calibration</div>
+  </div>
+  <div class="callout c-amber"><strong>Don't skip Domain 5.</strong> Context, caching, and confidence concepts recur inside Domain 1 and Domain 4 scenarios too. Candidates who skip this domain because "it's only 15%" lose points across the whole exam.</div>
+
+  <h3 id="d5-handoff">Handoff patterns between agents</h3>
+  <table>
+    <thead><tr><th>Strategy</th><th>What is passed</th><th>When to use</th></tr></thead>
+    <tbody>
+      <tr><td>Structured summary (HandoffPackage)</td><td>Typed dataclass with only what recipient needs</td><td>Default — prevents context explosion</td></tr>
+      <tr><td>Sliding window</td><td>Last N turns, older turns dropped</td><td>Long conversations, historical depth less important</td></tr>
+      <tr><td>Explicit extraction</td><td>Ask Claude to extract key facts before handoff</td><td>When prior conversation has relevant facts buried in prose</td></tr>
+    </tbody>
+  </table>
+  <div class="callout c-warn"><strong>Never pass full chat history to a subagent.</strong> It causes context explosion and includes irrelevant noise. The HandoffPackage pattern — a lean, typed, structured object — is the correct answer on every handoff scenario question.</div>
+  <pre><span class="ck">@dataclass</span>
+<span class="ck">class</span> HandoffPackage:
+    client_id: str
+    age: int
+    product_type: str
+    key_findings: list[str]    <span class="cm"># max 5 bullet points</span>
+    flags: list[str]           <span class="cm"># issues requiring attention</span>
+    confidence: float          <span class="cm"># 0.0–1.0</span>
+    escalate_to_human: bool    <span class="cm"># if True, bypass AI</span></pre>
+
+  <h3 id="d5-caching">Prompt caching</h3>
+  <table>
+    <thead><tr><th>Concept</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Cache breakpoints</td><td>Use <code>cache_control: {type: "ephemeral"}</code> to mark cacheable content</td></tr>
+      <tr><td>What to cache</td><td>Large static context: system prompts, reference docs, tool definitions</td></tr>
+      <tr><td>What NOT to cache</td><td>Rapidly changing content, per-user data, short content (cache overhead > savings)</td></tr>
+      <tr><td>Cost model</td><td>Cache write: 25% more tokens. Cache read: 90% cheaper. Break-even ~4 reads.</td></tr>
+      <tr><td>TTL</td><td>Ephemeral: 5 min. Persistent: varies by plan. Re-use within TTL = cache hit.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="d5-confidence">Confidence calibration</h3>
+  <pre><span class="cm"># Confidence threshold pattern</span>
+CONFIDENCE_THRESHOLD = <span class="cv">0.65</span>
+
+<span class="ck">class</span> CalibratedOutput(BaseModel):
+    answer: str
+    confidence: float          <span class="cm"># 0.0 = certain wrong, 1.0 = certain correct</span>
+    reasoning_basis: str       <span class="cm"># "calculated" | "estimated" | "inferred" | "unknown"</span>
+    data_gaps: list[str]       <span class="cm"># what information was missing</span>
+    escalate: bool             <span class="cm"># auto-set: confidence < CONFIDENCE_THRESHOLD</span>
+
+<span class="cm"># Agents must NEVER silently guess on high-stakes outputs</span>
+<span class="ck">if</span> output.confidence < CONFIDENCE_THRESHOLD:
+    route_to_human_reviewer(output)</pre>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div class="section" id="quiz">
+  <h2>20-question practice quiz</h2>
+  <p>Domain-weighted: 5 D1 questions, 4 D2, 4 D3, 4 D4, 3 D5. Click a choice to reveal the answer and explanation.</p>
+  <div class="quiz-progress">
+    <div class="progress-bar"><div class="progress-fill" id="qprogress" style="width:0%"></div></div>
+    <span id="qstatus">0 / 20 answered</span>
+    <span id="qscore" style="float:right;color:var(--green);display:none"></span>
+  </div>
+  <div id="score-display" class="score-display">
+    <div class="score-num" id="final-score">0/20</div>
+    <div id="final-msg" style="color:var(--muted);margin-bottom:16px"></div>
+    <button onclick="resetQuiz()" style="padding:8px 20px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:13px">Retake quiz</button>
+  </div>
+
+  <div id="quiz-container"></div>
+</div>
+
+<!-- ══ CHEAT SHEET ══ -->
+<div class="section" id="cheatsheet">
+  <h2>Printable cheat sheet</h2>
+  <p>Print this page with Ctrl+P (or ⌘+P). The sidebar hides automatically in print mode.</p>
+
+  <h3>Domain 1 — Agentic Architecture</h3>
+  <div class="cheat-row"><span class="cheat-key">stop_reason: "end_turn"</span><span class="cheat-val">Terminate the loop. NEVER use text content parsing to detect completion.</span></div>
+  <div class="cheat-row"><span class="cheat-key">stop_reason: "tool_use"</span><span class="cheat-val">Execute all tool calls, append results as user message, continue loop.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Tool results → "user" role</span><span class="cheat-val">Tool results go back as a user message, NOT assistant. Common exam trap.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Append order</span><span class="cheat-val">Assistant message FIRST, then tool results. Role alternation: user→assistant→user.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Task tool</span><span class="cheat-val">Required in allowed_tools for a coordinator to spawn subagents.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Parallel spawning</span><span class="cheat-val">Multiple Task calls in ONE coordinator response = concurrent. Separate turns = sequential.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Context isolation</span><span class="cheat-val">Subagents cannot see coordinator history. Must receive everything explicitly in prompt.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Hooks vs prompt rules</span><span class="cheat-val">Hooks = 100% compliance (code runs). Prompt = ~99% probabilistic. Use hooks for hard policy.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Minimal footprint</span><span class="cheat-val">Request only needed permissions. Prefer reversible actions. Narrower scope = better answer.</span></div>
+  <div class="cheat-row"><span class="cheat-key">max_turns</span><span class="cheat-val">Safety cap only — NOT the primary stop mechanism. Primary = stop_reason.</span></div>
+
+  <h3>Domain 2 — MCP</h3>
+  <div class="cheat-row"><span class="cheat-key">stdio transport</span><span class="cheat-val">Local subprocess, single client, JSON-RPC over stdin/stdout. Claude Code uses this.</span></div>
+  <div class="cheat-row"><span class="cheat-key">SSE transport</span><span class="cheat-val">HTTP-based, multi-client, networked. Use for shared/cloud servers.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Tool descriptions</span><span class="cheat-val">The only signal Claude uses for tool selection. Vague = wrong picks. Specific = reliable.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Tool count ≤7</span><span class="cheat-val">Too many tools = reasoning overload = wrong tool selected. This is a real exam question.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Never print() in server.py</span><span class="cheat-val">stdout is reserved for JSON-RPC. print() corrupts the protocol stream.</span></div>
+
+  <h3>Domain 3 — Claude Code</h3>
+  <div class="cheat-row"><span class="cheat-key">CLAUDE.md hierarchy</span><span class="cheat-val">~/.claude/ → project root → subfolder. Most specific wins on conflicts. All apply simultaneously.</span></div>
+  <div class="cheat-row"><span class="cheat-key">CLAUDE.md token cost</span><span class="cheat-val">Costs tokens EVERY turn. Keep each file under 500 tokens. Use /context to check.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Slash commands</span><span class="cheat-val">.claude/commands/name.md — zero overhead until user types /name.</span></div>
+  <div class="cheat-row"><span class="cheat-key">claude -p "..."</span><span class="cheat-val">Non-interactive print mode. Use in CI/CD pipelines (GitHub Actions, etc.).</span></div>
+  <div class="cheat-row"><span class="cheat-key">Auth: Pro vs API key</span><span class="cheat-val">Unset ANTHROPIC_API_KEY for Claude Code to use Pro subscription. Both set = warning.</span></div>
+
+  <h3>Domain 4 — Prompt Engineering</h3>
+  <div class="cheat-row"><span class="cheat-key">Format in system prompt</span><span class="cheat-val">Schema and format instructions ALWAYS in system prompt, not user prompt.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Retry loop MAX = 3</span><span class="cheat-val">Parse → ValidationError → re-prompt with specific error → repeat. Never more than 3.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Specific error feedback</span><span class="cheat-val">"That was invalid, try again" = bad. Exact field + expected format + wrong value = good.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Few-shot in system prompt</span><span class="cheat-val">Examples as static context. Cover: normal, edge case, negative example.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Batch API</span><span class="cheat-val">When user is NOT waiting. 50% cost savings. 24h window. Never for blocking pipeline steps.</span></div>
+  <div class="cheat-row"><span class="cheat-key">strict: true</span><span class="cheat-val">On tool definitions — guarantees schema compliance at API level. Use for extraction tasks.</span></div>
+
+  <h3>Domain 5 — Context Management</h3>
+  <div class="cheat-row"><span class="cheat-key">HandoffPackage</span><span class="cheat-val">Lean typed dataclass with ONLY what recipient needs. Never pass full chat history.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Confidence threshold</span><span class="cheat-val">< 0.65 → escalate to human. Never let agent silently guess on high-stakes output.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Cache write cost</span><span class="cheat-val">25% more on first write. Cache read: 90% cheaper. Break-even at ~4 reads.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Cache: what to cache</span><span class="cheat-val">Large static system prompts, reference docs, tool definitions. NOT per-user dynamic data.</span></div>
+  <div class="cheat-row"><span class="cheat-key">Sliding window</span><span class="cheat-val">Keep last N turns, drop older ones. Use when full history not needed and context is tight.</span></div>
+</div>
+
+<!-- ══ ANTI-PATTERNS ══ -->
+<div class="section" id="antipatterns">
+  <h2>Anti-patterns the exam tests directly</h2>
+  <table>
+    <thead><tr><th>Anti-pattern</th><th>Why it fails</th><th>Correct pattern</th><th>Domain</th></tr></thead>
+    <tbody>
+      <tr><td>Text-based loop termination</td><td>Non-deterministic; Claude may produce completion phrases mid-task</td><td>Check <code>stop_reason === "end_turn"</code></td><td><span class="pill p-d1">D1</span></td></tr>
+      <tr><td>Skip appending assistant message</td><td>Breaks role alternation; API rejects malformed history</td><td>Always append assistant BEFORE tool results</td><td><span class="pill p-d1">D1</span></td></tr>
+      <tr><td>Fixed routing (always invoke all subagents)</td><td>Wastes latency and tokens when only some are needed</td><td>Dynamic routing: coordinator plans first</td><td><span class="pill p-d1">D1</span></td></tr>
+      <tr><td>Prompt rules for hard policy</td><td>~99% compliance — the 1% matters for financial/security</td><td>Interception hooks (code = 100%)</td><td><span class="pill p-d1">D1</span></td></tr>
+      <tr><td>Vague context to subagent</td><td>Subagent has no history; needs everything explicitly</td><td>Build full prompt with all needed data</td><td><span class="pill p-d1">D1</span></td></tr>
+      <tr><td>Too many MCP tools (&gt;7)</td><td>LLM tool selection degrades — wrong tools get called</td><td>Keep to ≤7, split into multiple servers if needed</td><td><span class="pill p-d2">D2</span></td></tr>
+      <tr><td>print() in MCP server.py</td><td>Corrupts JSON-RPC protocol stream on stdout</td><td>Log to stderr, never stdout</td><td><span class="pill p-d2">D2</span></td></tr>
+      <tr><td>Format instructions in user prompt</td><td>System prompt is the right place; user prompt should be data only</td><td>Schema in system prompt</td><td><span class="pill p-d4">D4</span></td></tr>
+      <tr><td>Generic retry feedback "try again"</td><td>Claude can't self-correct without knowing which field failed</td><td>Pass exact field, expected format, wrong value</td><td><span class="pill p-d4">D4</span></td></tr>
+      <tr><td>Batch API for real-time response</td><td>24h latency window — user can't wait that long</td><td>Sync API for any user-facing query</td><td><span class="pill p-d4">D4</span></td></tr>
+      <tr><td>Pass full chat history in handoff</td><td>Context explosion; noise overwhelms signal</td><td>HandoffPackage — lean typed dataclass</td><td><span class="pill p-d5">D5</span></td></tr>
+      <tr><td>Silent low-confidence output</td><td>Agent guesses when it shouldn't; high-stakes errors</td><td>Confidence threshold + escalation</td><td><span class="pill p-d5">D5</span></td></tr>
+      <tr><td>Verbose CLAUDE.md (&gt;500 tokens/file)</td><td>Costs tokens every turn; dilutes rule adherence</td><td>Keep lean; use slash commands for workflows</td><td><span class="pill p-d3">D3</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ 8-WEEK TIMELINE ══ -->
+<div class="section" id="timeline">
+  <h2>8-week study plan</h2>
+  <div class="timeline">
+    <div class="tl-item done"><div class="tl-dot"></div><div class="tl-week">Week 1–2</div><div class="tl-task">Domain 1 — Agentic Architecture (27%)</div><div class="tl-detail">Run agent.py → multi_agent.py → orchestrator.py → decomposer.py. Add hooks to orchestrator. Read Agent SDK docs.</div></div>
+    <div class="tl-item done"><div class="tl-dot"></div><div class="tl-week">Week 3</div><div class="tl-task">Domain 2 — MCP Integration (18%)</div><div class="tl-detail">Build stdio server → test_client.py → MCP Inspector → wire into Claude Code. Build SSE variant.</div></div>
+    <div class="tl-item done"><div class="tl-dot"></div><div class="tl-week">Week 4</div><div class="tl-task">Domain 3 — Claude Code Workflows (20%)</div><div class="tl-detail">4-level CLAUDE.md hierarchy. Custom slash commands. CI/CD reviewer. /model /context /mcp daily.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-week">Week 5</div><div class="tl-task">Domain 4 — Prompt Engineering (20%)</div><div class="tl-detail">structured_output.py (Pydantic + retry). few_shot_classifier.py. Batch API patterns.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-week">Week 6</div><div class="tl-task">Domain 5 — Context Management (15%)</div><div class="tl-detail">handoff.py (HandoffPackage). calibration.py (confidence threshold). Prompt caching patterns.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-week">Week 7</div><div class="tl-task">Capstone — all 5 domains</div><div class="tl-detail">Run advisor.py (D1+D4+D5 combined). Push to GitHub with smart_commit.sh. Extend MCP server.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-week">Week 8</div><div class="tl-task">Mock exams + weak spot review</div><div class="tl-detail">CertSafari 636 free questions. Target 85%+ before booking. Review wrong answers against docs.</div></div>
+  </div>
+</div>
+
+<!-- ══ RESOURCES ══ -->
+<div class="section" id="resources">
+  <h2>Resources — ranked by value</h2>
+  <div class="res-list">
+    <div class="res-item"><div class="res-icon">📄</div><div><div class="res-title">docs.anthropic.com <span class="res-badge rb-free">FREE</span></div><div class="res-desc">Primary source. API reference, Agent SDK, MCP protocol, Claude Code docs. Everything else is derived from here.</div></div></div>
+    <div class="res-item"><div class="res-icon">🏗️</div><div><div class="res-title">Your ccaf-annuities-lab + mcp-annuities-server <span class="res-badge rb-done">BUILT</span></div><div class="res-desc">Covers all 5 domains end-to-end. Run, extend, and deliberately break the files — this is the most exam-relevant practice.</div></div></div>
+    <div class="res-item"><div class="res-icon">❓</div><div><div class="res-title">CertSafari — certsafari.com/anthropic <span class="res-badge rb-free">FREE · 636 questions</span></div><div class="res-desc">Domain-weighted practice questions, no paywall. Best free question bank available. Aim for 85%+ before booking.</div></div></div>
+    <div class="res-item"><div class="res-icon">🌐</div><div><div class="res-title">claudecertprep.com <span class="res-badge rb-free">FREE</span></div><div class="res-desc">Community study guide with domain deep-dives, flashcards, cheat sheet, mock exam, and quiz. Docusaurus-based, open source on GitHub.</div></div></div>
+    <div class="res-item"><div class="res-icon">📰</div><div><div class="res-title">Rick Hightower 8-part series — Towards AI <span class="res-badge rb-free">FREE</span></div><div class="res-desc">Scenario-grounded deep dives. Strong on D1 orchestration and D4 prompting patterns. Covers 15 high-value gap topics.</div></div></div>
+    <div class="res-item"><div class="res-icon">🌐</div><div><div class="res-title">ccaf-claude-certified-architect-fou.vercel.app <span class="res-badge rb-free">FREE</span></div><div class="res-desc">Visual study guide: SVG domain map, 15-question mock quiz, flashcards, 12-week plan, printable cheat sheet. No dependencies, self-contained HTML.</div></div></div>
+    <div class="res-item"><div class="res-icon">🍳</div><div><div class="res-title">github.com/anthropics/anthropic-cookbook <span class="res-badge rb-free">FREE</span></div><div class="res-desc">Official Anthropic code examples for every domain. Study the patterns — many exam scenarios are based on these.</div></div></div>
+    <div class="res-item"><div class="res-icon">🎯</div><div><div class="res-title">SkillCertPro — 720 questions <span class="res-badge rb-paid">PAID</span></div><div class="res-desc">Largest question bank. Worth buying only after exhausting CertSafari. Use as a final-week confidence check.</div></div></div>
+    <div class="res-item"><div class="res-icon">🎓</div><div><div class="res-title">Anthropic Academy (Skilljar) <span class="res-badge rb-free">FREE</span></div><div class="res-desc">Official Anthropic course: "Building with the Claude API" (8+ hours). Claude Code on Coursera via Vanderbilt. Register for the exam here.</div></div></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+const QUESTIONS = [
+  {domain:"D1",q:"An agentic loop exits immediately when Claude's response contains the phrase 'Task completed successfully'. What is the architectural flaw?",choices:["The system prompt doesn't tell Claude to avoid completion phrases","The loop uses text content to detect termination instead of stop_reason","The tool results are appended as assistant messages instead of user","The max_tokens setting is too low"],correct:1,exp:"Only stop_reason === 'end_turn' is a reliable termination signal. Claude can produce completion phrases in partial responses, thinking blocks, or mid-task clarifications. Text parsing is non-deterministic and will cause premature exits."},
+  {domain:"D1",q:"A coordinator needs to run web search and document analysis simultaneously for the same query. Both are independent. Current code calls task('web_agent') in turn 1 and task('doc_agent') in turn 2. What should change?",choices:["Switch to pipeline pattern so results flow sequentially","Emit both Task tool calls in a single coordinator response turn","Add a third coordinator to manage both subagents","Use SSE transport for faster communication"],correct:1,exp:"When Task calls appear in a single response, the Agent SDK executes them concurrently. Sequential turns mean the second agent only starts after the first completes — pure latency waste for independent tasks."},
+  {domain:"D1",q:"A financial agent must never approve transactions over $10,000 without a compliance flag. Which implementation is architecturally correct?",choices:["Add the rule to the system prompt","Use few-shot examples showing refusals of large transactions","Implement an interception hook that fires before the approval tool executes","Post-process Claude's output and block if the amount is detected"],correct:2,exp:"Hooks are code — they run with 100% compliance. Prompt instructions are probabilistic (~99%). For financial policy gates, only hooks are architecturally correct. Post-processing (D) fires after the model has already produced the response."},
+  {domain:"D1",q:"A synthesis subagent consistently misses findings from a web search subagent. Both share the same coordinator. What is the most likely cause?",choices:["The synthesis agent has a shorter context window","The coordinator did not explicitly pass web search results to the synthesis agent's prompt","The agents need to run on the same session to share state","The web agent used a different model"],correct:1,exp:"Subagents have fully isolated context. They cannot see the coordinator's history or each other's outputs. The coordinator MUST explicitly build each subagent's prompt with all needed data. Subagents receiving 'synthesize the findings' with no actual findings have nothing to work with."},
+  {domain:"D1",q:"After resuming a Claude Code session, Claude analyzes files using stale pre-update content. What was missed?",choices:["The session should have been forked instead","Claude Code doesn't support file access after resumption","The developer didn't tell Claude which files changed after resuming","The context window was exceeded"],correct:2,exp:"Claude does not automatically detect file system changes between sessions. When resuming, you must explicitly state which files changed. fork_session is for two independent branches from the same baseline, not for stale file handling."},
+  {domain:"D2",q:"An MCP server works correctly in the MCP Inspector but shows '✘ Failed to connect' in Claude Code. The claude mcp list shows the wrong Python path. What happened?",choices:["The server.py has a syntax error not caught by the Inspector","realpath followed the venv symlink to /usr/bin/python3.12 which lacks the mcp package","The SSE transport is incompatible with Claude Code CLI","The .mcp.json file is in the wrong directory"],correct:1,exp:"realpath resolves symlinks — the .venv/bin/python symlink points to the system Python which doesn't have mcp or pyyaml installed. The fix: use $(pwd)/.venv/bin/python which keeps the venv path intact."},
+  {domain:"D2",q:"A team MCP server needs to support multiple simultaneous clients from different machines. Which transport should be used?",choices:["stdio transport with shared process","SSE (Server-Sent Events) over HTTP","WebSocket transport","gRPC transport"],correct:1,exp:"stdio transport is single-client and local (subprocess). SSE transport is HTTP-based, multi-client, and network-accessible. For shared/cloud servers, SSE is the only option."},
+  {domain:"D2",q:"After adding 3 more tools to an MCP server (now 9 total), Claude starts calling the wrong tool intermittently. What is the cause?",choices:["The new tools have bugs in their implementation","The JSON schemas for the new tools are malformed","Too many tools exceeds the LLM's reliable tool-selection capacity","The server needs to be restarted to reload the new tools"],correct:2,exp:"Tool selection is pattern-matching against schema descriptions by the model. Beyond ~7 tools, the model's ability to reliably pick the correct one degrades. This is the 'tool boundary / reasoning overload' concept the exam tests directly."},
+  {domain:"D2",q:"Which MCP primitive is most appropriate for serving the raw annuities.csv content to Claude?",choices:["A tool named 'get_csv_content'","A resource at 'annuities://dataset'","A prompt template that includes the CSV","A system prompt injection"],correct:1,exp:"Resources are for static or dynamic data the server can serve — URI-addressed, read directly by the client without a tool call. Tools are for actions/computations. Resources avoid tool-call overhead for reference data."},
+  {domain:"D3",q:"A project has CLAUDE.md files at: ~/.claude/, project root, domain1/, and domain1/subproject/. A rule in project root says 'use pandas for CSV'. The subproject CLAUDE.md says 'use polars for CSV'. Which applies in subproject/?",choices:["The user-global file (~/.claude/) always wins","The most specific file (subproject/CLAUDE.md) wins on conflicts","Both apply and Claude picks arbitrarily","The project root file wins because it was loaded first"],correct:1,exp:"More specific files win on conflicts. All levels apply simultaneously for non-conflicting rules. In subproject/, the polars rule applies because subproject/CLAUDE.md is more specific than project root. Non-conflicting rules from all 4 levels still apply."},
+  {domain:"D3",q:"A developer runs /context in Claude Code and sees 'Memory files: 2,340 tokens (1.2%)'. What should concern them?",choices:["1.2% is too close to the context limit","2,340 tokens for CLAUDE.md files costs tokens on every single turn","The memory files are not being loaded correctly","This is normal and nothing to be concerned about"],correct:1,exp:"CLAUDE.md content is injected into every request — the 2,340 tokens are spent on every turn regardless of relevance. Keep CLAUDE.md files lean (under 500 tokens each) and move workflow instructions to slash commands which have zero overhead until invoked."},
+  {domain:"D3",q:"A CI/CD pipeline needs Claude to review changed Python files on every pull request without any interactive session. What is the correct approach?",choices:["Use claude --resume to continue a previous review session","Use claude -p 'Review this file: ...' for non-interactive output","Open Claude Code in headless mode","Use the Batch API for all PR reviews"],correct:1,exp:"claude -p (print mode) runs Claude non-interactively and exits with the output — perfect for CI/CD pipelines. --resume continues an interactive session. Batch API has a 24h latency window unsuitable for PR reviews."},
+  {domain:"D3",q:"Where should a reusable 'generate portfolio report' workflow be placed to minimize context overhead while remaining available project-wide?",choices:["In the root CLAUDE.md file","In a .claude/commands/portfolio-report.md slash command","In the user-global ~/.claude/CLAUDE.md","As a tool in the MCP server"],correct:1,exp:"Slash commands have zero token overhead until invoked. CLAUDE.md content costs tokens every turn. For on-demand workflows that aren't needed on every turn, slash commands are always the correct answer."},
+  {domain:"D4",q:"Claude keeps returning JSON with a number field as a string ('total_amount': '125.00'). The system prompt says 'return valid JSON'. What is the best fix?",choices:["Add a note in the user prompt: 'remember total_amount must be a number'","Move the format instruction to the system prompt with an explicit JSON schema showing types","Use few-shot examples showing correct number formatting","Switch to a more capable model"],correct:1,exp:"System prompt is where format instructions and schemas belong — not the user prompt. The schema should explicitly specify types (e.g. 'total_amount': number). Few-shot examples can also help but an explicit schema is more reliable than showing by example."},
+  {domain:"D4",q:"After 3 retries, Claude still returns an invalid JSON field. What is the correct action?",choices:["Increase max_retries to 10","Return an error to the user asking them to rephrase","Route to human review with a structured error record","Switch to a different model for the next attempt"],correct:2,exp:"After MAX_RETRIES (3 is the exam-standard limit), the correct action is to route to human review — not to keep retrying infinitely. Return a structured result: {status: 'failed', requires_human_review: True, error: '...'}. Infinite retries violate the reliability principle."},
+  {domain:"D4",q:"50,000 customer support tickets need category classification overnight. Users won't see results until morning. Which API is correct?",choices:["Synchronous API with parallel worker threads","Message Batches API","Claude Code with a custom script","Streaming API for faster throughput"],correct:1,exp:"Batch API is exactly right here: user is NOT waiting (overnight job), volume is high (50K), and 50% cost savings apply. Synchronous with threads works but costs 2× more. Batch API's 24h window is acceptable when results aren't needed until morning."},
+  {domain:"D4",q:"Few-shot examples should be placed in which part of the API call?",choices:["The user message along with each new request","The system prompt as static context","A separate examples API parameter","Tool definitions as example inputs"],correct:1,exp:"Few-shot examples belong in the system prompt as static context — they're loaded once and apply to all user requests in the session. Including examples in each user message wastes tokens on every call."},
+  {domain:"D5",q:"A subagent handoff includes the full 45-turn conversation history from the coordinator. What is the primary problem?",choices:["45 turns exceeds the subagent's context window","The subagent cannot process conversation history from another agent","The full history causes context explosion with irrelevant noise diluting signal","The role alternation in the history will cause API errors"],correct:2,exp:"The HandoffPackage pattern exists to solve this. Full history includes many irrelevant turns and noise. The subagent only needs specific structured facts from the coordinator's work. Context explosion is real and degrades output quality."},
+  {domain:"D5",q:"An agent returns an answer with confidence: 0.42. What should happen?",choices:["Return the answer to the user with a disclaimer","Retry with a better prompt","Escalate to human review","Switch to a more capable model and retry"],correct:2,exp:"Confidence below the threshold (0.65 is the common exam answer) must trigger escalation to human review. Agents should never silently guess on high-stakes outputs. The escalate_to_human flag in HandoffPackage handles this routing."},
+  {domain:"D5",q:"A large static system prompt (8,000 tokens) is sent on every API call for a high-volume customer service bot. What optimization should be applied?",choices:["Compress the system prompt to under 1,000 tokens","Use prompt caching with cache_control breakpoints on the static content","Move the system prompt to a CLAUDE.md file","Use the Batch API instead of synchronous calls"],correct:1,exp:"Prompt caching marks static content with cache_control. First write costs 25% more, but reads cost 90% less. For high-volume bots sending the same large system prompt repeatedly, caching breaks even after ~4 calls and saves significant cost after that."}
+];
+
+let answered = 0, correct = 0, total = QUESTIONS.length;
+
+function buildQuiz(){
+  const container = document.getElementById('quiz-container');
+  QUESTIONS.forEach((q,i) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.id = 'q'+i;
+    const dClass = q.domain.toLowerCase().replace('d','p-d');
+    card.innerHTML = `<div class="quiz-q"><span class="quiz-q-tag ${dClass}" style="background:rgba(127,119,221,.15);color:#a5b4fc">${q.domain}</span>${q.q}</div>
+    <div class="choices">${q.choices.map((c,j)=>`<div class="choice" onclick="answer(${i},${j})">${String.fromCharCode(65+j)}. ${c}</div>`).join('')}</div>
+    <div class="explanation" id="exp${i}"><strong>Answer: ${String.fromCharCode(65+q.correct)}</strong> — ${q.exp}</div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(qi, chosen){
+  const card = document.getElementById('q'+qi);
+  if(card.dataset.done) return;
+  card.dataset.done = '1';
+  const choices = card.querySelectorAll('.choice');
+  const q = QUESTIONS[qi];
+  choices[q.correct].classList.add('correct');
+  if(chosen !== q.correct) choices[chosen].classList.add('wrong');
+  document.getElementById('exp'+qi).classList.add('show');
+  answered++;
+  if(chosen === q.correct) correct++;
+  document.getElementById('qstatus').textContent = `${answered} / ${total} answered`;
+  document.getElementById('qprogress').style.width = (answered/total*100)+'%';
+  if(answered === total){
+    const pct = Math.round(correct/total*100);
+    const sd = document.getElementById('score-display');
+    sd.classList.add('show');
+    const sn = document.getElementById('final-score');
+    sn.textContent = correct+'/'+total+' ('+pct+'%)';
+    sn.className = 'score-num ' + (pct >= 75 ? 'score-pass' : 'score-fail');
+    document.getElementById('final-msg').textContent = pct >= 85 ? 'Excellent! You are ready to book the exam.' : pct >= 72 ? 'Good — review wrong answers and retake next week.' : 'Focus on your weak domains and retry in a few days.';
+    document.getElementById('qscore').textContent = correct+'/'+total;
+    document.getElementById('qscore').style.display = 'inline';
+  }
+}
+
+function resetQuiz(){
+  answered = 0; correct = 0;
+  document.getElementById('quiz-container').innerHTML = '';
+  document.getElementById('score-display').classList.remove('show');
+  document.getElementById('qstatus').textContent = '0 / 20 answered';
+  document.getElementById('qprogress').style.width = '0%';
+  document.getElementById('qscore').style.display = 'none';
+  buildQuiz();
+}
+
+function scrollTo(id){
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+buildQuiz();
+
+// Scrollspy
+const sections = ['overview','comparison','d1','d2','d3','d4','d5','quiz','cheatsheet','antipatterns','timeline','resources'];
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.nav-link,.nav-domain').forEach(l=>l.classList.remove('active'));
+      const id = e.target.id;
+      document.querySelectorAll(`[onclick="scrollTo('${id}')"]`).forEach(l=>l.classList.add('active'));
+    }
+  });
+},{threshold:0.15});
+sections.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+</script>
+</body>
+</html>
