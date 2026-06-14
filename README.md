@@ -247,3 +247,5 @@ claude mcp add annuities-server -- "$(pwd)/.venv/bin/python" server.py
 # Fix Opus / API billing instead of Pro
 claude /logout → claude.ai YES → API key NO
 ```
+
+<-- See all tables with row Last updated: 2026-06-13 -->
